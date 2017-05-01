@@ -10,6 +10,7 @@ namespace ShootGame
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var form = new GameForm(Levels.CreateLevels());
+            form.KeyPreview = true;
             form.InitializeComponent();
             Application.Run(form);
         }

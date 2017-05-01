@@ -9,7 +9,7 @@ namespace ShootGame
         public readonly Vector Location;
         public readonly ushort Health;
         public readonly int Experiens;
-        public readonly double Direction;
+        public double Direction;
 
         public Hero(Vector location, ushort health, int experiens, double direction)
         {
@@ -23,7 +23,7 @@ namespace ShootGame
         public Hero(int experiens) => Experiens = experiens;
         public Hero(double direction) => Direction = direction;
 
-        public static readonly string[] Heros = { "hero_07", "hero_08", "hero_09", "hero_06", "hero_05" };
+        public static readonly string[] Heroes = { "hero_07", "hero_08", "hero_09", "hero_06", "hero_05" };
 
         public static Image GetImage(string e) => (Image)ResourceManager.GetObject(e);
     }

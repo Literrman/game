@@ -16,8 +16,8 @@ namespace ShootGame
         private static Image fonImage;
         private Level currentLevel;
         private Timer timer;
-        private int iterationIndex;
-        private bool right, left, up, down;
+        //private int iterationIndex;
+        private bool right, left, up, down, diagonalLeft,diagonalRight;
         private readonly Size mapSize = new Size(1023, 768);
         private double X = MousePosition.X;
         private double Y = MousePosition.Y;
@@ -38,7 +38,7 @@ namespace ShootGame
 
         public GameForm(IEnumerable<Level> levels)
         {           
-            hero = Hero.GetImage(Hero.Heros[0]);
+            hero = Hero.GetImage(Hero.Heroes[0]);
 
             timer = new Timer { Interval = 10 };
             timer.Tick += TimerTick;
@@ -56,7 +56,7 @@ namespace ShootGame
             currentLevel = newSpace;
             currentLevel.Reset();
             timer.Start();
-            iterationIndex = 0;
+            //iterationIndex = 0;
         }
 
         //private static void Recounter(double x, double y, double angle)
@@ -77,7 +77,11 @@ namespace ShootGame
 
         private void MoveHero()
         {
-            var step = left ? Step.Left : right ? Step.Right : up ? Step.Up : down ? Step.Down : Step.None;
+            var step = left ? Step.Left : right ? Step.Right : 
+                up ? Step.Up : down ? Step.Down : 
+                diagonalLeft? Step.DiagonalLeft:
+                diagonalRight? Step.DiagoanlRight:
+                Step.None;
             currentLevel.Move(mapSize, step); //////////////////сделать для диагональных шагов и угол////////////////////
         }
 
@@ -91,7 +95,7 @@ namespace ShootGame
         //    else if (key == Keys.R) Recounter(X, Y, Angle += Math.PI / 6);
         //    else
         //    {
-        //        message = "Unknow input!";
+        //        message = "Unknown input!";
         //        Form.Invalidate();
         //    }
         //}
@@ -103,6 +107,9 @@ namespace ShootGame
             if (e == Keys.W) up = isDown;
             if (e == Keys.S) down = isDown;
             if (e == Keys.Escape) Close();
+            if (e == Keys.W && e == Keys.A) diagonalLeft = isDown;
+            if (e == Keys.Q) diagonalLeft = isDown;
+            if (e == Keys.E) diagonalRight = isDown;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -125,7 +132,7 @@ namespace ShootGame
             {
                 g.Transform = matrix;
                 g.TranslateTransform((float)currentLevel.Hero.Location.X, (float)currentLevel.Hero.Location.Y);
-                //g.RotateTransform(90 + (float)(currentLevel.Hero.Direction * 180 / Math.PI));
+                g.RotateTransform((float)(currentLevel.Hero.Direction * 180 / Math.PI));
                 g.DrawImage(hero, -hero.Width / 2, -hero.Height / 2);
             }
             g.Transform = matrix;
@@ -150,5 +157,7 @@ public enum Step
     Left = -1,
     Right = 1,
     Up = -2,
-    Down = 2
+    Down = 2,
+    DiagonalLeft = 3,
+    DiagoanlRight = -3
 }
