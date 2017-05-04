@@ -7,7 +7,7 @@ namespace ShootGame
     public class Levels
     {
         private static readonly Vector Location = new Vector(512, 374);
-        private static readonly Hero Hero = new Hero(location: Location, health: 100, experiens: 0, direction:0);
+        private static readonly Hero Hero = new Hero(location: Location, health: 100, experiens: 0, direction: 0);
 
         public static IEnumerable<Level> CreateLevels()
         {

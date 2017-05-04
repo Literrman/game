@@ -4,41 +4,47 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
-using static ShootGame.Properties.Resources;
+using static ShootGame.Hero;
 
 namespace ShootGame
 {
     sealed class GameForm : Form
     {
-        private readonly Image hero;
-        private static Image fonImage;
+        private Image hero;
+        //private static Image fonImage;
         private Level currentLevel;
         private Timer timer;
-        //private int iterationIndex;
-        private bool right, left, up, down, diagonalLeft,diagonalRight;
-        private readonly Size mapSize = new Size(1023, 768);
-        private double X = MousePosition.X;
-        private double Y = MousePosition.Y;
+        private int iterationIndex;
 
-        public void InitializeComponent()
+        private int animation;
+        private readonly bool[] movement = new bool[4];
+        private readonly Size mapSize = new Size(1023, 768);
+        private Point MousePos = new Point(MousePosition.X, MousePosition.Y);
+
+        public void InitializeForm()
         {
-            StartPosition = FormStartPosition.CenterScreen;
+            Cursor.Hide();
             ClientSize = mapSize;
             FormBorderStyle = FormBorderStyle.None;
-            fonImage = Image.FromFile("Images/background0.jpg");
+            StartPosition = FormStartPosition.CenterScreen;
+
+            //fonImage = Image.FromFile("Images/background0.jpg");
             BackgroundImage = Image.FromFile("Images/background0.jpg");
             DoubleBuffered = true;
+            KeyPreview = true;
 
             KeyDown += (sender, e) => HandleKey(e.KeyCode, true);
             KeyUp += (sender, e) => HandleKey(e.KeyCode, false);
-            MouseMove += (sender, e) => { X = e.X; Y = e.Y; };
+            MouseMove += (sender, e) => MousePos = e.Location;
+            Paint += (sender, e) => DrawTo(e.Graphics);
         }
 
         public GameForm(IEnumerable<Level> levels)
         {           
-            hero = Hero.GetImage(Hero.Heroes[0]);
+            hero = GetImage(Heros[0]);
 
             timer = new Timer { Interval = 10 };
             timer.Tick += TimerTick;
@@ -48,7 +54,6 @@ namespace ShootGame
             {
                 if (currentLevel == null) currentLevel = level;
             }
-            KeyPreview = true;
         }
 
         private void ChangeLevel(Level newSpace)
@@ -56,73 +61,39 @@ namespace ShootGame
             currentLevel = newSpace;
             currentLevel.Reset();
             timer.Start();
-            //iterationIndex = 0;
+            iterationIndex = 0;
         }
-
-        //private static void Recounter(double x, double y, double angle)
-        //{
-        //    var angles = ManipulatorTask.MoveManipulatorTo(x, y, angle);
-        //    Form.Invalidate();
-        //}
 
         private void TimerTick(object sender, EventArgs e)
         {
             if (currentLevel == null) return;
             //MoveMonster();
-            MoveHero();
+            if (!movement.All(x => !x))
+            {
+                currentLevel.MoveHero(mapSize, movement);
+                hero = GetImage(Heros[++animation / 5 % 5]);
+            }
+            else hero = GetImage(Heros[animation = 0]);
+            currentLevel.RotateHero(MousePos);
             //if (currentLevel.IsCompleted) timer.Stop();
             Invalidate();
             Update();
         }
 
-        private void MoveHero()
+        private void HandleKey(Keys e, bool isPress)
         {
-            var step = left ? Step.Left : right ? Step.Right : 
-                up ? Step.Up : down ? Step.Down : 
-                diagonalLeft? Step.DiagonalLeft:
-                diagonalRight? Step.DiagoanlRight:
-                Step.None;
-            currentLevel.Move(mapSize, step); //////////////////сделать для диагональных шагов и угол////////////////////
-        }
+            if (e == Keys.W) movement[(int)Step.Up] = isPress;           
+            if (e == Keys.A) movement[(int)Step.Left] = isPress;
+            if (e == Keys.D) movement[(int)Step.Right] = isPress;
+            if (e == Keys.S) movement[(int)Step.Down] = isPress;
 
-        //public static void KeyDown1(object sender, Keys key)
-        //{
-        //    if (key == Keys.S) Recounter(X, Y -= 10, Angle);
-        //    else if (key == Keys.A) Recounter(X -= 10, Y, Angle);
-        //    else if (key == Keys.W) Recounter(X, Y += 10, Angle);
-        //    else if (key == Keys.D) Recounter(X += 10, Y, Angle);
-        //    else if (key == Keys.F) Recounter(X, Y, Angle -= Math.PI / 6);
-        //    else if (key == Keys.R) Recounter(X, Y, Angle += Math.PI / 6);
-        //    else
-        //    {
-        //        message = "Unknown input!";
-        //        Form.Invalidate();
-        //    }
-        //}
-
-        private void HandleKey(Keys e, bool isDown)
-        {
-            if (e == Keys.A) left = isDown;
-            if (e == Keys.D) right = isDown;
-            if (e == Keys.W) up = isDown;
-            if (e == Keys.S) down = isDown;
             if (e == Keys.Escape) Close();
-            if (e == Keys.W && e == Keys.A) diagonalLeft = isDown;
-            if (e == Keys.Q) diagonalLeft = isDown;
-            if (e == Keys.E) diagonalRight = isDown;
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            var g = e.Graphics;
-            //var g = Graphics.FromImage(BackgroundImage);
-            DrawTo(g);
         }
 
         private void DrawTo(Graphics g)
         {           
             g.SmoothingMode = SmoothingMode.HighQuality;
-            g.DrawImage(fonImage, 0, 0);
+            //g.DrawImage(fonImage, 0, 0);
 
             if (currentLevel == null) return;
 
@@ -132,11 +103,11 @@ namespace ShootGame
             {
                 g.Transform = matrix;
                 g.TranslateTransform((float)currentLevel.Hero.Location.X, (float)currentLevel.Hero.Location.Y);
-                g.RotateTransform((float)(currentLevel.Hero.Direction * 180 / Math.PI));
+                g.RotateTransform(90 + (float)(currentLevel.Hero.Direction * 180 / Math.PI));
                 g.DrawImage(hero, -hero.Width / 2, -hero.Height / 2);
             }
             g.Transform = matrix;
-            g.FillEllipse(Brushes.Red, (float)X - 4, (float)Y - 4, 8, 8);
+            g.FillEllipse(Brushes.Red, MousePos.X - 4, MousePos.Y - 4, 8, 8);
         }
 
     }   
@@ -153,11 +124,8 @@ public enum Level
 
 public enum Step
 {
-    None = 0,
-    Left = -1,
+    Left = 0,
     Right = 1,
-    Up = -2,
-    Down = 2,
-    DiagonalLeft = 3,
-    DiagoanlRight = -3
+    Up = 2,
+    Down = 3
 }

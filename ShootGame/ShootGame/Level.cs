@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Drawing;
 using static ShootGame.Properties.Resources;
 
@@ -19,72 +20,46 @@ namespace ShootGame
         public readonly Hero InitialHero;
         public Hero Hero;
 
-        public bool IsCompleted => Hero.Location.Length < 20; /////////////////////////////////////////////////////////////////////////////////
+        /*public bool IsCompleted => Hero.Location.Length < 20;*/ /////////////////////////////////////////////////////////////////////////////////
 
         //public bool IsDead => (Hero.Location - Monster.Location).Length < 20;
         public Image GetImage(string e) => (Image)ResourceManager.GetObject(e);
 
-        public void Move(Size spaceSize, Step step)
+        public void MoveHero(Size space, bool[] movement)
         {
-            if (step == Step.None) return;
-            var location = Vector.Zero;
-            if (step == Step.Left && Hero.Location.X != 0)
-                {
-                location += new Vector(Hero.Location + new Vector((double)step, 0).Normalize());
-                Hero = new Hero(location);
-                Hero.Direction -= Math.PI / 2;
-                return;
-                }
-            if (step == Step.Right && Hero.Location.X != spaceSize.Width)
-                {
-                location += new Vector(Hero.Location + new Vector((double)step, 0).Normalize());
-                Hero = new Hero(location);
-                Hero.Direction += Math.PI / 2;
-                return;
-            }
-            if (step == Step.Down && Hero.Location.Y != spaceSize.Height)
-                {
-                location += new Vector(Hero.Location + new Vector(0, (double)step).Normalize());
-                Hero = new Hero(location);
-                Hero.Direction += Math.PI;
-                return;
-            }
-            if (step == Step.Up && Hero.Location.Y != 0)
-                {
-                location += new Vector(Hero.Location + new Vector(0, (double)step).Normalize());
-                Hero = new Hero(location);
-                Hero.Direction += 2*Math.PI;
-                return;
-                //не работает поворот вверх
-            }
-            if (step == Step.DiagoanlRight && Hero.Location.X != spaceSize.Width && Hero.Location.Y != 0)
-                {
-                location += new Vector(Hero.Location + new Vector((-1) * (double)step, (double)step).Normalize());
-                Hero = new Hero(location);
-                Hero.Direction += Math.PI/4;
-                return;
-            }
-            if (step == Step.DiagonalLeft && Hero.Location.X != 0 && Hero.Location.Y != 0)
-                {
-                location += new Vector(Hero.Location + new Vector((-1) * (double)step, (-1) * (double)step).Normalize());
-                Hero = new Hero(location);
-                Hero.Direction -= Math.PI/4;
-                return;
-            }
-            /*
-             * Довольно странное дело, я вроде бы и проверяю условия дохождения и вроде они работают, но почему тогда движения совершаются?
-             * */
-            return;
+            var x = 0;
+            var y = 0;
+            Vector loc;
+
+            if (movement[(int)Step.Left]) x--;
+            if (movement[(int)Step.Right]) x++;
+            if (movement[(int)Step.Up]) y--;
+            if (movement[(int)Step.Down]) y++;
+
+            if (x != 0 && y != 0) loc = Hero.Location + new Vector(x,y)/Math.Sqrt(2);
+            else loc = Hero.Location + new Vector(x,y);
+
+            if (loc.X - 20 < 0) loc = new Vector(20,loc.Y);
+            if (loc.Y - 20 < 0) loc = new Vector(loc.X, 20);
+            if (loc.X + 20 > space.Width) loc = new Vector(space.Width - 20, loc.Y);          
+            if (loc.Y + 20 > space.Height) loc = new Vector(loc.X, space.Height - 20);
+           
+            Hero = new Hero(loc);
         }
 
-        //public void MoveMonster(Size spaceSize, Step step)
+        internal void RotateHero(Point e)
+        {
+            var length = Math.Sqrt(Math.Pow(e.X - Hero.Location.X, 2) + Math.Pow(e.Y - Hero.Location.Y, 2));
+            var angle = Math.Acos((e.X - Hero.Location.X) / length);
+            if (e.Y <= Hero.Location.Y) angle = -angle;
+            Hero = new Hero(angle, Hero.Location);
+        }
+
+        //public void MoveMonster(Size space, Step movement)
         //{
 
         //}
 
-        public void Reset()
-        {
-            Hero = InitialHero;
-        }        
+        public void Reset() => Hero = InitialHero;
     }
 }
