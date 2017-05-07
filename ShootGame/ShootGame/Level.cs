@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Drawing;
+using System.Linq.Expressions;
 using static ShootGame.Properties.Resources;
 
 
@@ -9,6 +10,11 @@ namespace ShootGame
     public class Level
     {    
         private static Vector _step = new Vector(1,0);
+        public readonly string Name;
+        public readonly Hero InitialHero;
+        public Hero Hero;
+        private const int StepLen = 1;
+
         public Level(string name, Hero hero)
         {
             Name = name;
@@ -16,25 +22,21 @@ namespace ShootGame
             InitialHero = hero;
         }
 
-        public readonly string Name;
-        public readonly Hero InitialHero;
-        public Hero Hero;
+        //public bool IsCompleted => Enemy.Count == 0; //////////////////////////////////////////////////////////////////////////////////
+        public bool IsDead => Hero.Health <= 0;
 
-        /*public bool IsCompleted => Hero.Location.Length < 20;*/ /////////////////////////////////////////////////////////////////////////////////
-
-        //public bool IsDead => (Hero.Location - Monster.Location).Length < 20;
         public Image GetImage(string e) => (Image)ResourceManager.GetObject(e);
 
         public void MoveHero(Size space, bool[] movement)
         {
+            Vector loc;
             var x = 0;
             var y = 0;
-            Vector loc;
 
-            if (movement[(int)Step.Left]) x--;
-            if (movement[(int)Step.Right]) x++;
-            if (movement[(int)Step.Up]) y--;
-            if (movement[(int)Step.Down]) y++;
+            if (movement[(int)Step.Left]) x -= StepLen;
+            if (movement[(int)Step.Right]) x += StepLen;
+            if (movement[(int)Step.Up]) y -= StepLen;
+            if (movement[(int)Step.Down]) y += StepLen;
 
             if (x != 0 && y != 0) loc = Hero.Location + new Vector(x,y)/Math.Sqrt(2);
             else loc = Hero.Location + new Vector(x,y);
@@ -54,11 +56,6 @@ namespace ShootGame
             if (e.Y <= Hero.Location.Y) angle = -angle;
             Hero = new Hero(angle, Hero.Location);
         }
-
-        //public void MoveMonster(Size space, Step movement)
-        //{
-
-        //}
 
         public void Reset() => Hero = InitialHero;
     }
