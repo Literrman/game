@@ -16,6 +16,9 @@ namespace ShootGame
         private Image hero;
         private Image aim;
         private Image bulletIMG;
+        private Image enemyIMG;
+
+        private Enemy enemy;
         //private static Image fonImage;
 
         private Level currentLevel;
@@ -57,7 +60,8 @@ namespace ShootGame
         {           
             hero = GetImage(Heros[0]);
             aim = GetImage("aim");
-            bulletIMG = GetImage("bullet1");
+            bulletIMG = GetImage("bullRED");
+            enemyIMG = GetImage("enemy0_02");
 
             timer = new Timer { Interval = 10 };
             timer.Tick += TimerTick;
@@ -67,6 +71,8 @@ namespace ShootGame
             {
                 if (currentLevel == null) currentLevel = level;
             }
+
+            enemy = new Enemy(new Vector(200,200), 100, 20, 0);
         }
 
         private void ChangeLevel(Level newSpace)
@@ -90,7 +96,7 @@ namespace ShootGame
 
             currentLevel.RotateHero(MousePos);
             timeCount += timer.Interval;
-            if (bulletMove && timeCount > 130)
+            if (bulletMove && timeCount > 100)
             {
                 timeCount = 0;
                 var bull = new Bullet(new Vector(currentLevel.Hero.Location), currentLevel.Hero.Direction);
@@ -100,6 +106,7 @@ namespace ShootGame
             {
                 bullet.Move();
             }
+            enemy.Move(currentLevel.Hero.Location);
 
             //if (currentLevel.IsCompleted) timer.Stop();
             Invalidate();
@@ -125,22 +132,19 @@ namespace ShootGame
         private void DrawBullet(Graphics g, Bullet bull)
         {
             g.SmoothingMode = SmoothingMode.HighQuality;
-            
             var matrix = g.Transform;
 
             g.TranslateTransform((float)bull.Location.X, (float)bull.Location.Y);
             g.RotateTransform(90 + (float)(bull.Direction * 180 / Math.PI));
-            g.FillEllipse(Brushes.Red, -bulletIMG.Width/2+20, -bulletIMG.Height/2+20, 20, 20);
+            g.DrawImage(bulletIMG, -bulletIMG.Width/2, -bulletIMG.Height/2);
+            //g.FillEllipse(Brushes.Red, -bulletIMG.Width/2+20, -bulletIMG.Height/2+20, 20, 20);
             g.Transform = matrix;
         }
 
         private void DrawTo(Graphics g)
-        {           
-            g.SmoothingMode = SmoothingMode.HighQuality;
-            //g.DrawImage(fonImage, 0, 0);
-
+        {
             if (currentLevel == null) return;
-
+            g.SmoothingMode = SmoothingMode.HighQuality;
             var matrix = g.Transform;
 
             if (timer.Enabled)
@@ -149,6 +153,11 @@ namespace ShootGame
                 g.TranslateTransform((float)currentLevel.Hero.Location.X, (float)currentLevel.Hero.Location.Y);
                 g.RotateTransform(90 + (float)(currentLevel.Hero.Direction * 180 / Math.PI));
                 g.DrawImage(hero, -hero.Width/2, -hero.Height/2);
+
+                g.Transform = matrix;
+                g.TranslateTransform((float)enemy.Location.X, (float)enemy.Location.Y);
+                g.RotateTransform(90 + (float)(enemy.Direction * 180 / Math.PI));
+                g.DrawImage(enemyIMG, -enemyIMG.Width/2, -enemyIMG.Height/2);
             }
             g.Transform = matrix;
             g.DrawImage(aim, MousePos.X - aim.Width/2, MousePos.Y - aim.Height/2);

@@ -124,6 +124,36 @@
   <data name="bullet1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\bullets\bullet_08.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="bullRED" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\bullets\bullet_14.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="enemy0_00" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\enemy3\enemy0_00.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="enemy0_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\enemy3\enemy0_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="enemy0_02" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\enemy3\enemy0_02.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="enemy0_03" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\enemy3\enemy0_03.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="enemy0_04" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\enemy3\enemy0_04.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="enemy0_05" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\enemy3\enemy0_05.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="enemy0_06" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\enemy3\enemy0_06.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="enemy0_07" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\enemy3\enemy0_07.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="enemy0_08" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\enemy3\enemy0_08.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="hero_05" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\hero\weapon0\hero_05.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

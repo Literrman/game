@@ -22,7 +22,7 @@ namespace ShootGame
             InitialHero = hero;
         }
 
-        //public bool IsCompleted => Enemy.Count == 0; //////////////////////////////////////////////////////////////////////////////////
+        public bool IsCompleted => Enemy.Count == 0;
         public bool IsDead => Hero.Health <= 0;
 
         public Image GetImage(string e) => (Image)ResourceManager.GetObject(e);
@@ -56,7 +56,6 @@ namespace ShootGame
             if (e.Y <= Hero.Location.Y) angle = -angle;
             Hero = new Hero(angle, Hero.Location);
         }
-
         public void Reset() => Hero = InitialHero;
     }
 }

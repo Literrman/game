@@ -7,7 +7,7 @@ namespace ShootGame
     {
         public Vector Location;
         public readonly double Direction;
-        public static List<Bullet> Bullets = new List<Bullet>();
+        public static HashSet<Bullet> Bullets = new HashSet<Bullet>();
 
         public Bullet(Vector location, double direction)
         {

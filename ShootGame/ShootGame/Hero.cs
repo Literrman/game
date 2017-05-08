@@ -18,7 +18,7 @@ namespace ShootGame
             Experiens = experiens;
             Direction = direction;
         }
-        public Hero(Vector location) =>  Location = location;
+        public Hero(Vector location) => Location = location;
         public Hero(ushort health) => Health = health;
         public Hero(int experiens) => Experiens = experiens;
         public Hero(double direction) => Direction = direction;
