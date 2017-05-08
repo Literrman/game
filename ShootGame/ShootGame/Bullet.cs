@@ -7,7 +7,7 @@ namespace ShootGame
     {
         public Vector Location;
         public readonly double Direction;
-        public List<Bullet> Bullets = new List<Bullet>();
+        public static List<Bullet> Bullets = new List<Bullet>();
 
         public Bullet(Vector location, double direction)
         {
@@ -16,10 +16,10 @@ namespace ShootGame
             Bullets.Add(this);
         }
 
-        private void Move()
+        public void Move()
         {
-            Location.X += 1*Math.Cos(Direction);
-            Location.Y += 1*Math.Sin(Direction);
+            Location.X += 2*Math.Cos(Direction);
+            Location.Y += 2*Math.Sin(Direction);
         }
     }
 }
