@@ -5,21 +5,25 @@ namespace ShootGame
 {
     public class Bullet
     {
-        public Vector Location;
+        public readonly Vector Location;
         public readonly double Direction;
-        public static HashSet<Bullet> Bullets = new HashSet<Bullet>();
+        private readonly double Speed;
+        private static double MaxDistance = 2000;
+        public static readonly List<Bullet> Bullets = new List<Bullet>();
 
-        public Bullet(Vector location, double direction)
+        public Bullet(Vector location, double direction, double speed)
         {
-            Location = location;
+            Location = new Vector(location);
             Direction = direction;
+            Speed = speed;
             Bullets.Add(this);
         }
 
         public void Move()
-        {
-            Location.X += 2*Math.Cos(Direction);
-            Location.Y += 2*Math.Sin(Direction);
+        {          
+            Location.X += Speed*Math.Cos(Direction);
+            Location.Y += Speed*Math.Sin(Direction);
+            if (Location.Length > MaxDistance) Bullets.Remove(this);
         }
     }
 }

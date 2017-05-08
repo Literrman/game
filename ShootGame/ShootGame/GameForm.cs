@@ -16,9 +16,9 @@ namespace ShootGame
         private Image hero;
         private Image aim;
         private Image bulletIMG;
-        private Image enemyIMG;
 
         private Enemy enemy;
+        private Bullet bullet;
         //private static Image fonImage;
 
         private Level currentLevel;
@@ -31,10 +31,12 @@ namespace ShootGame
         private int timeCount;
 
         private readonly bool[] heroMove = new bool[4];
-        private bool bulletMove = false;
+        private bool bulletMove;
 
         private readonly Size mapSize = new Size(1023, 768);
         private Point MousePos = new Point(MousePosition.X, MousePosition.Y);
+
+        private static Random rnd = new Random();
 
         public void InitializeForm()
         {
@@ -61,7 +63,6 @@ namespace ShootGame
             hero = GetImage(Heros[0]);
             aim = GetImage("aim");
             bulletIMG = GetImage("bullRED");
-            enemyIMG = GetImage("enemy0_02");
 
             timer = new Timer { Interval = 10 };
             timer.Tick += TimerTick;
@@ -71,8 +72,6 @@ namespace ShootGame
             {
                 if (currentLevel == null) currentLevel = level;
             }
-
-            enemy = new Enemy(new Vector(200,200), 100, 20, 0);
         }
 
         private void ChangeLevel(Level newSpace)
@@ -95,18 +94,18 @@ namespace ShootGame
             else hero = GetImage(Heros[animation = 0]);
 
             currentLevel.RotateHero(MousePos);
-            timeCount += timer.Interval;
-            if (bulletMove && timeCount > 100)
-            {
-                timeCount = 0;
-                var bull = new Bullet(new Vector(currentLevel.Hero.Location), currentLevel.Hero.Direction);
-                Paint += (sender1, a) => DrawBullet(a.Graphics, bull);
-            }
-            foreach (var bullet in Bullet.Bullets)
-            {
-                bullet.Move();
-            }
-            enemy.Move(currentLevel.Hero.Location);
+
+            timeCount += timer.Interval;////////не забыть
+            
+            if (bulletMove && timeCount % 100 == 0)
+                bullet = new Bullet(currentLevel.Hero.Location, currentLevel.Hero.Direction, 5);
+            foreach (var bull in Bullet.Bullets.ToList())
+                bull.Move();
+
+            if (timeCount % 1000 == 0)
+                enemy = new Enemy(RandomStartLocation(), 100, 20, 0);
+            foreach (var enem in Enemy.Enemies)
+                enem.Move(currentLevel.Hero.Location);
 
             //if (currentLevel.IsCompleted) timer.Stop();
             Invalidate();
@@ -129,16 +128,17 @@ namespace ShootGame
             //if (e == MouseButtons.Right) Paint -= DrawBullet;
         }
 
-        private void DrawBullet(Graphics g, Bullet bull)
+        private Vector RandomStartLocation()
         {
-            g.SmoothingMode = SmoothingMode.HighQuality;
-            var matrix = g.Transform;
+            var a = mapSize.Width;
+            var b = mapSize.Height;
+            var perimetr = (a + b) * 2;           
+            var n = rnd.Next(perimetr);
 
-            g.TranslateTransform((float)bull.Location.X, (float)bull.Location.Y);
-            g.RotateTransform(90 + (float)(bull.Direction * 180 / Math.PI));
-            g.DrawImage(bulletIMG, -bulletIMG.Width/2, -bulletIMG.Height/2);
-            //g.FillEllipse(Brushes.Red, -bulletIMG.Width/2+20, -bulletIMG.Height/2+20, 20, 20);
-            g.Transform = matrix;
+            if (n < a) return new Vector(n, -20);
+            if (n - a < b) return new Vector(a + 20, n - a);
+            if (n - a - b < a) return new Vector(n - a - b, b + 20);
+            return new Vector(0, n - 2 * a - b);
         }
 
         private void DrawTo(Graphics g)
@@ -154,10 +154,20 @@ namespace ShootGame
                 g.RotateTransform(90 + (float)(currentLevel.Hero.Direction * 180 / Math.PI));
                 g.DrawImage(hero, -hero.Width/2, -hero.Height/2);
 
-                g.Transform = matrix;
-                g.TranslateTransform((float)enemy.Location.X, (float)enemy.Location.Y);
-                g.RotateTransform(90 + (float)(enemy.Direction * 180 / Math.PI));
-                g.DrawImage(enemyIMG, -enemyIMG.Width/2, -enemyIMG.Height/2);
+                foreach (var enem in Enemy.Enemies)
+                {
+                    g.Transform = matrix;
+                    g.TranslateTransform((float)enem.Location.X, (float)enem.Location.Y);
+                    g.RotateTransform(90 + (float)(enem.Direction * 180 / Math.PI));
+                    g.DrawImage(enem.EnemyIMG, -enem.EnemyIMG.Width / 2, -enem.EnemyIMG.Height / 2);
+                }               
+                foreach (var bull in Bullet.Bullets)
+                {
+                    g.Transform = matrix;
+                    g.TranslateTransform((float) bull.Location.X, (float) bull.Location.Y);
+                    g.RotateTransform(90 + (float) (bull.Direction * 180 / Math.PI));
+                    g.DrawImage(bulletIMG, -bulletIMG.Width / 2, -bulletIMG.Height / 2);                  
+                }
             }
             g.Transform = matrix;
             g.DrawImage(aim, MousePos.X - aim.Width/2, MousePos.Y - aim.Height/2);

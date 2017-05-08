@@ -10,6 +10,7 @@ namespace ShootGame
         public readonly ushort Health;
         public readonly int Experiens;
         public readonly double Direction;
+        public readonly Image HeroImage;
 
         public Hero(Vector location, ushort health, int experiens, double direction)
         {
