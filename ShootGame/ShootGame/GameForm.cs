@@ -98,13 +98,13 @@ namespace ShootGame
             timeCount += timer.Interval;////////не забыть
             
             if (bulletMove && timeCount % 100 == 0)
-                bullet = new Bullet(currentLevel.Hero.Location, currentLevel.Hero.Direction, 5);
+                bullet = new Bullet(currentLevel.Hero.Location, 10, currentLevel.Hero.Direction, 5);
             foreach (var bull in Bullet.Bullets.ToList())
                 bull.Move();
 
             if (timeCount % 1000 == 0)
-                enemy = new Enemy(RandomStartLocation(), 100, 20, 0);
-            foreach (var enem in Enemy.Enemies)
+                enemy = new Enemy(RandomName(), RandomStartLocation(), 20, 20, 0);
+            foreach (var enem in Enemy.Enemies.ToList())
                 enem.Move(currentLevel.Hero.Location);
 
             //if (currentLevel.IsCompleted) timer.Stop();
@@ -132,13 +132,21 @@ namespace ShootGame
         {
             var a = mapSize.Width;
             var b = mapSize.Height;
-            var perimetr = (a + b) * 2;           
+            var perimetr = (a + b) * 2;
             var n = rnd.Next(perimetr);
 
             if (n < a) return new Vector(n, -20);
             if (n - a < b) return new Vector(a + 20, n - a);
             if (n - a - b < a) return new Vector(n - a - b, b + 20);
             return new Vector(0, n - 2 * a - b);
+        }
+
+        private Name RandomName()
+        {
+            var n = rnd.Next(2);
+            if (n == 0) return global::Name.robot0;
+            if (n == 1) return global::Name.robot1;
+            return global::Name.monstr;
         }
 
         private void DrawTo(Graphics g)
@@ -149,7 +157,15 @@ namespace ShootGame
 
             if (timer.Enabled)
             {
-                //g.Transform = matrix;
+                foreach (var blood in Enemy.Blood)
+                {
+                    g.Transform = matrix;
+                    g.TranslateTransform((float)blood.Location.X, (float)blood.Location.Y);
+                    g.RotateTransform(90 + (float)(blood.Direction * 180 / Math.PI));
+                    g.DrawImage(blood.EnemyIMG, -blood.EnemyIMG.Width/2, -blood.EnemyIMG.Height/2);
+                }
+
+                g.Transform = matrix;
                 g.TranslateTransform((float)currentLevel.Hero.Location.X, (float)currentLevel.Hero.Location.Y);
                 g.RotateTransform(90 + (float)(currentLevel.Hero.Direction * 180 / Math.PI));
                 g.DrawImage(hero, -hero.Width/2, -hero.Height/2);
@@ -159,15 +175,15 @@ namespace ShootGame
                     g.Transform = matrix;
                     g.TranslateTransform((float)enem.Location.X, (float)enem.Location.Y);
                     g.RotateTransform(90 + (float)(enem.Direction * 180 / Math.PI));
-                    g.DrawImage(enem.EnemyIMG, -enem.EnemyIMG.Width / 2, -enem.EnemyIMG.Height / 2);
+                    g.DrawImage(enem.EnemyIMG, -enem.EnemyIMG.Width/2, -enem.EnemyIMG.Height/2);
                 }               
                 foreach (var bull in Bullet.Bullets)
                 {
                     g.Transform = matrix;
                     g.TranslateTransform((float) bull.Location.X, (float) bull.Location.Y);
                     g.RotateTransform(90 + (float) (bull.Direction * 180 / Math.PI));
-                    g.DrawImage(bulletIMG, -bulletIMG.Width / 2, -bulletIMG.Height / 2);                  
-                }
+                    g.DrawImage(bulletIMG, -bulletIMG.Width/2, -bulletIMG.Height/2);                  
+                }                
             }
             g.Transform = matrix;
             g.DrawImage(aim, MousePos.X - aim.Width/2, MousePos.Y - aim.Height/2);
