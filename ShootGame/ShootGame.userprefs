@@ -1,0 +1,31 @@
+﻿<Properties StartupConfiguration="{8B68F221-C1A2-485A-AE4B-7F4A2BC32D0D}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ShootGame/Enemy.cs">
+    <Files>
+      <File FileName="ShootGame/TestRoom.cs" Line="84" Column="54" />
+      <File FileName="ShootGame/Enemy.cs" Line="1" Column="1" />
+      <File FileName="ShootGame/Bullet.cs" Line="1" Column="1" />
+      <File FileName="ShootGame/GameForm.cs" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="ShootGame" expanded="True">
+            <Node name="ShootGame" expanded="True">
+              <Node name="ShootGame" expanded="True">
+                <Node name="TestRoom" expanded="True">
+                  <Node name="RotateHero" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
