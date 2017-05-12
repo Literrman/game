@@ -33,7 +33,7 @@ namespace ShootGame
         public void EnemyAndHeroInteraction()
         {
             InitField();
-            var enemy = new Enemy(new Vector(10, 10));
+            var enemy = new Enemy(Name.robot0, new Vector(10, 10));
             enemy.Move(new Vector(5, 5));
             Assert.AreNotSame(10, Hero.Health);
         }
@@ -52,10 +52,10 @@ namespace ShootGame
         public void TwoEnemyInteraction_Location()
         {
             InitField();
-            var firstEnemy = new Enemy(new Vector(3,8));
-            var secondEnemy = new Enemy(new Vector(5, 8));
-            firstEnemy.Move(new Vector(3,8));
-            secondEnemy.Move(new Vector(5,8));
+            var firstEnemy = new Enemy(Name.robot0, new Vector(3 ,8));
+            var secondEnemy = new Enemy(Name.robot0, new Vector(5, 8));
+            firstEnemy.Move(new Vector(3, 8));
+            secondEnemy.Move(new Vector(5, 8));
             Assert.AreNotEqual(firstEnemy.Location,secondEnemy.Location);
         }
 
@@ -63,8 +63,8 @@ namespace ShootGame
         public void TwoEnemyInteraction_Health()
         {
 			InitField();
-            var firstEnemy = new Enemy(Name.robot0, new Vector(3, 8), 10, 0, 0);
-            var secondEnemy = new Enemy(Name.robot1, new Vector(5, 8), 10, 0, 0);
+            var firstEnemy = new Enemy(Name.robot0, new Vector(3, 8));
+            var secondEnemy = new Enemy(Name.robot1, new Vector(5, 8));
 			firstEnemy.Move(new Vector(3, 8));
 			secondEnemy.Move(new Vector(5, 8));
             Assert.AreEqual(firstEnemy.Health,10);
@@ -74,7 +74,7 @@ namespace ShootGame
         public void BulletOutOfField()
         {
 			InitField();
-            var bullet = new Bullet(new Vector(0, 0),0,-1, 100);
+            var bullet = new Bullet(new Vector(0, 0), 0, -1, 100);
 			bullet.Move();
             Assert.AreEqual(false, Bullet.Bullets.Contains(bullet));
         }
@@ -93,7 +93,7 @@ namespace ShootGame
 
         public void InitField()
         {
-            Hero = new Hero(new Vector(5, 5),10,0,0);
+            Hero = new Hero(new Vector(5, 5), 10, 0, 0);
             Form = new GameForm(Levels.CreateLevels());
             CurrentLevel = new Level("level0", Hero);
         }

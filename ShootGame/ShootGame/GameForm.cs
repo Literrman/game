@@ -103,7 +103,7 @@ namespace ShootGame
                 bull.Move();
 
             if (timeCount % 300 == 0)
-                enemy = new Enemy(RandomName(), RandomStartLocation(), 20, 20, 0);
+                enemy = new Enemy(RandomName(), RandomStartLocation());
             foreach (var enem in Enemy.Enemies.ToList())
                 enem.Move(currentLevel.Hero.Location);
 
@@ -143,9 +143,10 @@ namespace ShootGame
 
         private Name RandomName()
         {
-            var n = rnd.Next(2);
+            var n = rnd.Next(3);
             if (n == 0) return global::Name.robot0;
             if (n == 1) return global::Name.robot1;
+            if (n == 2) return global::Name.robot2;
             return global::Name.monstr;
         }
 
