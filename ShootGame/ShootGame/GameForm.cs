@@ -102,7 +102,7 @@ namespace ShootGame
             foreach (var bull in Bullet.Bullets.ToList())
                 bull.Move();
 
-            if (timeCount % 1000 == 0)
+            if (timeCount % 300 == 0)
                 enemy = new Enemy(RandomName(), RandomStartLocation(), 20, 20, 0);
             foreach (var enem in Enemy.Enemies.ToList())
                 enem.Move(currentLevel.Hero.Location);
