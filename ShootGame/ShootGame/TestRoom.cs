@@ -34,7 +34,7 @@ namespace ShootGame
         {
             InitField();
             var enemy = new Enemy(Name.robot0, new Vector(10, 10));
-            enemy.Move(new Vector(5, 5));
+            enemy.Move(new Hero(new Vector(5, 5)), 0);
             Assert.AreNotSame(10, Hero.Health);
         }
 
@@ -54,8 +54,8 @@ namespace ShootGame
             InitField();
             var firstEnemy = new Enemy(Name.robot0, new Vector(3 ,8));
             var secondEnemy = new Enemy(Name.robot0, new Vector(5, 8));
-            firstEnemy.Move(new Vector(3, 8));
-            secondEnemy.Move(new Vector(5, 8));
+            firstEnemy.Move(new Hero(new Vector(3, 8)), 0);
+            secondEnemy.Move(new Hero(new Vector(5, 8)), 0);
             Assert.AreNotEqual(firstEnemy.Location,secondEnemy.Location);
         }
 
@@ -65,8 +65,8 @@ namespace ShootGame
 			InitField();
             var firstEnemy = new Enemy(Name.robot0, new Vector(3, 8));
             var secondEnemy = new Enemy(Name.robot1, new Vector(5, 8));
-			firstEnemy.Move(new Vector(3, 8));
-			secondEnemy.Move(new Vector(5, 8));
+			firstEnemy.Move(new Hero(new Vector(3, 8)), 0);
+			secondEnemy.Move(new Hero(new Vector(5, 8)), 0);
             Assert.AreEqual(firstEnemy.Health,10);
         }
 

@@ -19,11 +19,12 @@ namespace ShootGame
 
         private Enemy enemy;
         private Bullet bullet;
+
+        private Weapon weapon;
         //private static Image fonImage;
 
         private Level currentLevel;
         private Timer timer;
-        private Timer timer2;
         private int iterationIndex;
 
         private int animation;
@@ -46,23 +47,27 @@ namespace ShootGame
             StartPosition = FormStartPosition.CenterScreen;
 
             //fonImage = Image.FromFile("Images/background0.jpg");
-            BackgroundImage = Image.FromFile("Images/background0.jpg");
+            BackgroundImage = GetImage("lvl1");
+            BackgroundImageLayout = ImageLayout.None;
             DoubleBuffered = true;
             KeyPreview = true;
 
             MouseMove += (sender, e) => MousePos = e.Location;
             KeyDown += (sender, e) => HandleKey(e.KeyCode, true);
             KeyUp += (sender, e) => HandleKey(e.KeyCode, false);
-            MouseDown += (sender, e) => HandleKey(e.Button,true);
+            MouseDown += (sender, e) => HandleKey(e.Button, true);
             MouseUp += (sender, e) => HandleKey(e.Button, false);
+            MouseWheel += (sender, e) => weapon = (Weapon)(((int)weapon + e.Delta / 120 + 3) % 3);
             Paint += (sender, e) => DrawTo(e.Graphics);
         }       
 
         public GameForm(IEnumerable<Level> levels)
-        {           
-            hero = GetImage(Heros[0]);
+        {
+            weapon = default(Weapon);
+            hero = GetImage(Heroes[MainHero.Halloween][weapon][0]);
             aim = GetImage("aim");
             bulletIMG = GetImage("bullRED");
+            
 
             timer = new Timer { Interval = 10 };
             timer.Tick += TimerTick;
@@ -89,9 +94,9 @@ namespace ShootGame
             if (!heroMove.All(x => !x))
             {
                 currentLevel.MoveHero(mapSize, heroMove);
-                hero = GetImage(Heros[++animation / 5 % 5]);
+                hero = GetImage(Heroes[MainHero.Halloween][weapon][++animation / 5 % 5]);
             }
-            else hero = GetImage(Heros[animation = 0]);
+            else hero = GetImage(Heroes[MainHero.Halloween][weapon][animation = 0]);
 
             currentLevel.RotateHero(MousePos);
 
@@ -99,15 +104,19 @@ namespace ShootGame
             
             if (bulletMove && timeCount % 100 == 0)
                 bullet = new Bullet(currentLevel.Hero.Location, 10, currentLevel.Hero.Direction, 5);
+
             foreach (var bull in Bullet.Bullets.ToList())
                 bull.Move();
 
-            if (timeCount % 300 == 0)
-                enemy = new Enemy(RandomName(), RandomStartLocation());
-            foreach (var enem in Enemy.Enemies.ToList())
-                enem.Move(currentLevel.Hero.Location);
+            if (timeCount % 300 == 0) enemy = new Enemy(RandomName(), RandomStartLocation());
 
-            //if (currentLevel.IsCompleted) timer.Stop();
+            foreach (var enem in Enemy.Enemies.ToList())
+            {
+                enem.Move(currentLevel.Hero, timeCount);
+                if ((enem.Location - currentLevel.Hero.Location).Length < 30 && timeCount % 500 == 0)
+                    currentLevel.Hero.Health -= enem.Damage;
+            }
+            if (currentLevel.IsDead) timer.Stop();
             Invalidate();
             Update();
         }
@@ -118,6 +127,10 @@ namespace ShootGame
             if (e == Keys.A) heroMove[(int)Step.Left] = isActive;
             if (e == Keys.D) heroMove[(int)Step.Right] = isActive;
             if (e == Keys.S) heroMove[(int)Step.Down] = isActive;
+
+            if (e == Keys.D1) weapon = Weapon.UZI;
+            if (e == Keys.D2) weapon = Weapon.Shotgun;
+            if (e == Keys.D3) weapon = Weapon.Plasmagun;
 
             if (e == Keys.Escape) Close();
         }
@@ -143,10 +156,11 @@ namespace ShootGame
 
         private Name RandomName()
         {
-            var n = rnd.Next(3);
+            var n = rnd.Next(4);
             if (n == 0) return global::Name.robot0;
             if (n == 1) return global::Name.robot1;
             if (n == 2) return global::Name.robot2;
+            if (n == 3) return global::Name.robot3;
             return global::Name.monstr;
         }
 
@@ -156,38 +170,34 @@ namespace ShootGame
             g.SmoothingMode = SmoothingMode.HighQuality;
             var matrix = g.Transform;
 
+            foreach (var blood in Enemy.Blood)
+            {
+                DrawObj(g, matrix, blood.Location, blood.Direction, blood.EnemyIMG);
+            }
+
             if (timer.Enabled)
             {
-                foreach (var blood in Enemy.Blood)
-                {
-                    g.Transform = matrix;
-                    g.TranslateTransform((float)blood.Location.X, (float)blood.Location.Y);
-                    g.RotateTransform(90 + (float)(blood.Direction * 180 / Math.PI));
-                    g.DrawImage(blood.EnemyIMG, -blood.EnemyIMG.Width/2, -blood.EnemyIMG.Height/2);
-                }
+                DrawObj(g, matrix, currentLevel.Hero.Location, currentLevel.Hero.Direction, hero);
+            }
 
-                g.Transform = matrix;
-                g.TranslateTransform((float)currentLevel.Hero.Location.X, (float)currentLevel.Hero.Location.Y);
-                g.RotateTransform(90 + (float)(currentLevel.Hero.Direction * 180 / Math.PI));
-                g.DrawImage(hero, -hero.Width/2, -hero.Height/2);
-
-                foreach (var enem in Enemy.Enemies)
-                {
-                    g.Transform = matrix;
-                    g.TranslateTransform((float)enem.Location.X, (float)enem.Location.Y);
-                    g.RotateTransform(90 + (float)(enem.Direction * 180 / Math.PI));
-                    g.DrawImage(enem.EnemyIMG, -enem.EnemyIMG.Width/2, -enem.EnemyIMG.Height/2);
-                }               
-                foreach (var bull in Bullet.Bullets)
-                {
-                    g.Transform = matrix;
-                    g.TranslateTransform((float) bull.Location.X, (float) bull.Location.Y);
-                    g.RotateTransform(90 + (float) (bull.Direction * 180 / Math.PI));
-                    g.DrawImage(bulletIMG, -bulletIMG.Width/2, -bulletIMG.Height/2);                  
-                }                
+            foreach (var enem in Enemy.Enemies)
+            {
+                DrawObj(g, matrix, enem.Location, enem.Direction, enem.EnemyIMG);
+            }               
+            foreach (var bull in Bullet.Bullets)
+            {
+                DrawObj(g, matrix, bull.Location, bull.Direction, bulletIMG);                            
             }
             g.Transform = matrix;
             g.DrawImage(aim, MousePos.X - aim.Width/2, MousePos.Y - aim.Height/2);
+        }
+
+        private void DrawObj(Graphics g, Matrix matrix, Vector loc, double dir, Image img)
+        {
+            g.Transform = matrix;
+            g.TranslateTransform((float)loc.X, (float)loc.Y);
+            g.RotateTransform(90 + (float)(dir * 180 / Math.PI));
+            g.DrawImage(img, -img.Width/2, -img.Height/2);
         }
     }   
 }
