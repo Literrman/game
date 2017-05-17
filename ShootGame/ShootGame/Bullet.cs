@@ -43,7 +43,7 @@ namespace ShootGame
             if (Location.Length > MaxDistance) Bullets.Remove(this);
         }
 
-        public readonly Dictionary<Weapon, Tuple<int,int,int,int,int, int>> WeaponInfo = new Dictionary<Weapon, Tuple<int, int, int, int, int, int>>
+        public readonly Dictionary<Weapon, Tuple<int,int,int,int,int,int>> WeaponInfo = new Dictionary<Weapon, Tuple<int, int, int, int, int, int>>
         {
             [Weapon.UZI] = Tuple.Create(10, 10, 8, 700, 8, 20),
             [Weapon.Shotgun] = Tuple.Create(4, 10, 20, 1500, 20, 40),

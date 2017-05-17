@@ -55,6 +55,11 @@ namespace ShootGame
             if (e.Y <= Hero.Location.Y) angle = -angle;
             Hero.Direction = angle;
         }
-        public void Reset() => Hero = InitialHero;
+        public void Reset()
+        {
+            Hero.Location = Levels.StartLoc;
+            Enemy.Blood.Clear();
+            Enemy.Enemies.Clear();
+        }
     }
 }

@@ -76,7 +76,7 @@ namespace ShootGame
             foreach (var level in levels)
             {
                 if (currentLvl == null) currentLvl = level;
-                if (currentLvl.IsCompleted) ChangeLevel(level);
+                //if (currentLvl.IsCompleted) ChangeLevel(level);
             }
         }
 
@@ -84,6 +84,7 @@ namespace ShootGame
         {
             currentLvl = newSpace;
             currentLvl.Reset();
+            BackgroundImage = GetImage(newSpace.Name);
             timer.Start();
         }
 
