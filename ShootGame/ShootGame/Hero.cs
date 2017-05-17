@@ -62,9 +62,9 @@ namespace ShootGame
         {
             [MainHero.Halloween] = new Dictionary<Weapon, string[]>
             {
-                [Weapon.UZI] = new [] { "hero0_07", "hero0_08", "hero0_09", "hero0_06", "hero0_05" },
-                [Weapon.Shotgun] = new [] { "hero0_17", "hero0_18", "hero0_19", "hero0_16", "hero0_15" },
-                [Weapon.Plasmagun] = new []{ "hero0_27", "hero0_28", "hero0_29", "hero0_26", "hero0_25" }
+                [Weapon.UZI] = new[] { "hero0_07", "hero0_08", "hero0_09", "hero0_06", "hero0_05" },
+                [Weapon.Shotgun] = new[] { "hero0_17", "hero0_18", "hero0_19", "hero0_16", "hero0_15" },
+                [Weapon.Plasmagun] = new[] { "hero0_27", "hero0_28", "hero0_29", "hero0_26", "hero0_25" }
 
             },
 
@@ -76,7 +76,26 @@ namespace ShootGame
             }
         };
 
-        public static Image GetImage(string e) => (Image)ResourceManager.GetObject(e);
+        //public static readonly Dictionary<MainHero, Dictionary<Weapon, Tuple<string[], int, int, int, int, int>>> HeroInfo = new Dictionary<MainHero, Dictionary<Weapon, Tuple<string[], int, int, int, int, int>>>
+        //{
+        //    [MainHero.Halloween] = new Dictionary<Weapon, Tuple<string[], int, int, int, int, int>>
+        //    {
+        //        [Weapon.UZI] = Tuple.Create(new[] { "hero0_07", "hero0_08", "hero0_09", "hero0_06", "hero0_05" }, 10, 800, 700, 8, 20),
+        //        [Weapon.Shotgun] = Tuple.Create(new[] { "hero0_17", "hero0_18", "hero0_19", "hero0_16", "hero0_15" }, 4, 600, 1500, 20, 40),
+        //        [Weapon.Plasmagun] = Tuple.Create(new[] { "hero0_27", "hero0_28", "hero0_29", "hero0_26", "hero0_25" }, 50, 1200, 1000, 20, 20),
+
+        //    },
+
+        //    [MainHero.Death] = new Dictionary<Weapon, Tuple<string[], int, int, int, int, int>>
+        //    {
+        //        [Weapon.UZI] = Tuple.Create(new[] { "hero1_07", "hero1_08", "hero1_09", "hero1_06", "hero1_05" }, 10, 800, 700, 8, 20),
+        //        [Weapon.Shotgun] = Tuple.Create(new[] { "hero1_17", "hero1_18", "hero1_19", "hero1_16", "hero1_15" }, 4, 600, 1500, 20, 40),
+        //        [Weapon.Plasmagun] = Tuple.Create(new[] { "hero1_27", "hero1_28", "hero1_29", "hero1_26", "hero1_25" }, 50, 1200, 1000, 20, 20),
+        //    }
+        //};
+
+        //item1 - img, item2 - bullet,  item3 - maxAmmo, item4 - speed, item5 - cooldown, item6 - damage, item7 - scatter
+        public static Bitmap GetImage(string e) => (Bitmap)ResourceManager.GetObject(e);
     }
 }
 

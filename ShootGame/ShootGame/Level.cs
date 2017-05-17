@@ -12,16 +12,18 @@ namespace ShootGame
         public readonly string Name;
         public readonly Hero InitialHero;
         public Hero Hero;
+        public int EnemyLim;
         private const int StepLen = 3;
 
-        public Level(string name, Hero hero)
+        public Level(string name, Hero hero, int count)
         {
             Name = name;
             Hero = hero;
+            EnemyLim = count;
             InitialHero = hero;
         }
 
-        //public bool IsCompleted => Enemy.Count == 0;
+        public bool IsCompleted => Enemy.Count == EnemyLim;
         public bool IsDead => Hero.Health <= 0;
 
         public Image GetImage(string e) => (Image)ResourceManager.GetObject(e);

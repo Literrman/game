@@ -23,13 +23,13 @@ namespace ShootGame
         private Weapon weapon;
         //private static Image fonImage;
 
-        private Level currentLevel;
+        private Level currentLvl;
         private Timer timer;
-        private int iterationIndex;
 
         private int animation;
         private int cooldown;
         private int timeCount;
+        private int lvlIndex;
 
         private readonly bool[] heroMove = new bool[4];
         private bool bulletMove;
@@ -47,7 +47,7 @@ namespace ShootGame
             StartPosition = FormStartPosition.CenterScreen;
 
             //fonImage = Image.FromFile("Images/background0.jpg");
-            BackgroundImage = GetImage("lvl1");
+            BackgroundImage = GetImage(currentLvl.Name);
             BackgroundImageLayout = ImageLayout.None;
             DoubleBuffered = true;
             KeyPreview = true;
@@ -75,35 +75,35 @@ namespace ShootGame
 
             foreach (var level in levels)
             {
-                if (currentLevel == null) currentLevel = level;
+                if (currentLvl == null) currentLvl = level;
+                if (currentLvl.IsCompleted) ChangeLevel(level);
             }
         }
 
         private void ChangeLevel(Level newSpace)
         {
-            currentLevel = newSpace;
-            currentLevel.Reset();
+            currentLvl = newSpace;
+            currentLvl.Reset();
             timer.Start();
-            iterationIndex = 0;
         }
 
         private void TimerTick(object sender, EventArgs e)
         {
-            if (currentLevel == null) return;
+            if (currentLvl == null) return;
 
             if (!heroMove.All(x => !x))
             {
-                currentLevel.MoveHero(mapSize, heroMove);
+                currentLvl.MoveHero(mapSize, heroMove);
                 hero = GetImage(Heroes[MainHero.Halloween][weapon][++animation / 5 % 5]);
             }
             else hero = GetImage(Heroes[MainHero.Halloween][weapon][animation = 0]);
 
-            currentLevel.RotateHero(MousePos);
+            currentLvl.RotateHero(MousePos);
 
             timeCount += timer.Interval;////////не забыть
             
-            if (bulletMove && timeCount % 100 == 0)
-                bullet = new Bullet(currentLevel.Hero.Location, 10, currentLevel.Hero.Direction, 5);
+            if (bulletMove && timeCount % 50 == 0)
+                bullet = new Bullet(weapon, currentLvl.Hero.Location, currentLvl.Hero.Direction);
 
             foreach (var bull in Bullet.Bullets.ToList())
                 bull.Move();
@@ -112,11 +112,12 @@ namespace ShootGame
 
             foreach (var enem in Enemy.Enemies.ToList())
             {
-                enem.Move(currentLevel.Hero, timeCount);
-                if ((enem.Location - currentLevel.Hero.Location).Length < 30 && timeCount % 500 == 0)
-                    currentLevel.Hero.Health -= enem.Damage;
+                enem.Move(currentLvl.Hero, timeCount);
+                if ((enem.Location - currentLvl.Hero.Location).Length < 30 && timeCount % 500 == 0)
+                    currentLvl.Hero.Health -= enem.Damage;
             }
-            if (currentLevel.IsDead) timer.Stop();
+            if (currentLvl.IsDead) timer.Stop();
+            if (currentLvl.IsCompleted) ChangeLevel(Levels.MyLevels[++lvlIndex]);
             Invalidate();
             Update();
         }
@@ -138,7 +139,6 @@ namespace ShootGame
         private void HandleKey(MouseButtons e, bool isAcive)
         {
             if (e == MouseButtons.Left) bulletMove = isAcive;
-            //if (e == MouseButtons.Right) Paint -= DrawBullet;
         }
 
         private Vector RandomStartLocation()
@@ -154,40 +154,34 @@ namespace ShootGame
             return new Vector(0, n - 2 * a - b);
         }
 
-        private Name RandomName()
+        private EName RandomName()
         {
             var n = rnd.Next(4);
-            if (n == 0) return global::Name.robot0;
-            if (n == 1) return global::Name.robot1;
-            if (n == 2) return global::Name.robot2;
-            if (n == 3) return global::Name.robot3;
-            return global::Name.monstr;
+            if (n == 0) return EName.robot0;
+            if (n == 1) return EName.robot1;
+            if (n == 2) return EName.robot2;
+            if (n == 3) return EName.robot3;
+            return EName.monstr;
         }
 
         private void DrawTo(Graphics g)
         {
-            if (currentLevel == null) return;
+            if (currentLvl == null) return;
             g.SmoothingMode = SmoothingMode.HighQuality;
             var matrix = g.Transform;
 
             foreach (var blood in Enemy.Blood)
-            {
                 DrawObj(g, matrix, blood.Location, blood.Direction, blood.EnemyIMG);
-            }
 
             if (timer.Enabled)
-            {
-                DrawObj(g, matrix, currentLevel.Hero.Location, currentLevel.Hero.Direction, hero);
-            }
+                DrawObj(g, matrix, currentLvl.Hero.Location, currentLvl.Hero.Direction, hero);
 
             foreach (var enem in Enemy.Enemies)
-            {
                 DrawObj(g, matrix, enem.Location, enem.Direction, enem.EnemyIMG);
-            }               
+
             foreach (var bull in Bullet.Bullets)
-            {
-                DrawObj(g, matrix, bull.Location, bull.Direction, bulletIMG);                            
-            }
+                DrawObj(g, matrix, bull.Location, bull.Direction, bulletIMG);
+            
             g.Transform = matrix;
             g.DrawImage(aim, MousePos.X - aim.Width/2, MousePos.Y - aim.Height/2);
         }
@@ -200,15 +194,6 @@ namespace ShootGame
             g.DrawImage(img, -img.Width/2, -img.Height/2);
         }
     }   
-}
-
-public enum Level
-{
-    One,
-    Two,
-    Three,
-    Four,
-    Five
 }
 
 public enum Step

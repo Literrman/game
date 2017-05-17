@@ -5,14 +5,13 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Schema;
 using static ShootGame.Hero;
 
 namespace ShootGame
 {
     class Enemy
     {
-        private Name Name;
+        private EName Name;
         public Vector Location;
         public int Health;
         public int Damage;
@@ -27,8 +26,9 @@ namespace ShootGame
         public static readonly HashSet<Enemy> Enemies = new HashSet<Enemy>();
 
         private static Random rnd = new Random();
+        public static int Count { get; private set; }
 
-        public Enemy(Name name, Vector location, double direction = 0)
+        public Enemy(EName name, Vector location, double direction = 0)
         {
             Name = name;
             EnemyIMG = GetImage(EnemiesIMG[Name][0]);
@@ -73,6 +73,7 @@ namespace ShootGame
                         Enemies.Remove(this);
                         EnemyIMG = GetImage(EnemiesIMG[Name][9]);
                         Blood.Enqueue(this);
+                        Count++;
                         if (Blood.Count == 50) Blood.Dequeue();
                     }
                     break;
@@ -80,26 +81,26 @@ namespace ShootGame
 
         }
 
-        public static readonly Dictionary<Name, string[]> EnemiesIMG = new Dictionary<Name, string[]>
+        public static readonly Dictionary<EName, string[]> EnemiesIMG = new Dictionary<EName, string[]>
         {
-            [Name.robot0] = new[] {"r0_02", "r0_01", "r0_00", "r0_03", "r0_04", "r0_05", "r0_06", "r0_07", "r0_08", "dead_00"},
-            [Name.robot1] = new[] {"r1_02", "r1_01", "r1_00", "r1_03", "r1_04", "r1_05", "r1_06", "r1_07", "r1_08", "dead_01"},
-            [Name.robot2] = new[] {"r2_02", "r2_01", "r2_00", "r2_03", "r2_04", "r2_05", "r2_06", "r2_07", "r2_08", "dead_02"},
-            [Name.robot3] = new[] {"r3_02", "r3_01", "r3_00", "r3_03", "r3_04", "r3_05", "r3_06", "r3_07", "r3_08", "dead_02"},
+            [EName.robot0] = new[] {"r0_02", "r0_01", "r0_00", "r0_03", "r0_04", "r0_05", "r0_06", "r0_07", "r0_08", "dead_00"},
+            [EName.robot1] = new[] {"r1_02", "r1_01", "r1_00", "r1_03", "r1_04", "r1_05", "r1_06", "r1_07", "r1_08", "dead_01"},
+            [EName.robot2] = new[] {"r2_02", "r2_01", "r2_00", "r2_03", "r2_04", "r2_05", "r2_06", "r2_07", "r2_08", "dead_02"},
+            [EName.robot3] = new[] {"r3_02", "r3_01", "r3_00", "r3_03", "r3_04", "r3_05", "r3_06", "r3_07", "r3_08", "dead_02"},
         };
 
-        public static readonly Dictionary<Name, Tuple<int, int, int, int>> EnemiesInfo = new Dictionary<Name, Tuple<int, int, int, int>>
+        public static readonly Dictionary<EName, Tuple<int, int, int, int>> EnemiesInfo = new Dictionary<EName, Tuple<int, int, int, int>>
         {
-            [Name.robot0] = Tuple.Create(20, 10, 5, 15),
-            [Name.robot1] = Tuple.Create(20, 10, 5, 15),
-            [Name.robot2] = Tuple.Create(20, 10, 5, 15),
-            [Name.robot3] = Tuple.Create(30, 15, 5, 20),
+            [EName.robot0] = Tuple.Create(20, 10, 5, 18),
+            [EName.robot1] = Tuple.Create(20, 10, 5, 18),
+            [EName.robot2] = Tuple.Create(20, 10, 5, 18),
+            [EName.robot3] = Tuple.Create(30, 15, 5, 25),
 
         };
     }
 }
 
-internal enum Name
+internal enum EName
 {
     robot0,
     robot1,

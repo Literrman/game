@@ -11,15 +11,24 @@ namespace ShootGame
 
         public static IEnumerable<Level> CreateLevels()
         {
-            yield return new Level("background0", Hero);
+            yield return new Level("lvl1", Hero, 10);
 
-            yield return new Level("background1", Hero);
+            yield return new Level("lvl2", Hero, 20);
 
-            yield return new Level("background2", Hero);
+            yield return new Level("lvl3", Hero, 100);
 
-            yield return new Level("background3", Hero);
+            yield return new Level("lvl4", Hero, 100);
 
-            yield return new Level("background4", Hero);
+            yield return new Level("lvl5", Hero, 100);
         }
+
+        public static List<Level> MyLevels = new List<Level>
+        {
+            new Level("lvl1", Hero, 2),
+            new Level("lvl2", Hero, 20),
+            new Level("lvl3", Hero, 100),
+            new Level("lvl4", Hero, 100),
+            new Level("lvl5", Hero, 100)
+        };
     }
 }
