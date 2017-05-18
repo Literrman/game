@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Drawing;
 using System.Linq.Expressions;
+using System.Threading;
 using static ShootGame.Properties.Resources;
 
 
@@ -10,9 +11,9 @@ namespace ShootGame
     public class Level
     {    
         public readonly string Name;
-        public readonly Hero InitialHero;
+        private readonly Hero InitialHero;
         public Hero Hero;
-        public int EnemyLim;
+        private readonly int EnemyLim;
         private const int StepLen = 3;
 
         public Level(string name, Hero hero, int count)
@@ -45,7 +46,8 @@ namespace ShootGame
             if (loc.X + 20 > space.Width) loc = new Vector(space.Width - 20, loc.Y);          
             if (loc.Y + 20 > space.Height) loc = new Vector(loc.X, space.Height - 20);
            
-            Hero.Location = loc;
+            //Hero.Location = loc;
+            Hero = new Hero(loc, Hero.Health, Hero.Experiens, Hero.Direction);
         }
 
         public void RotateHero(Point e)
@@ -53,13 +55,22 @@ namespace ShootGame
             var length = Math.Sqrt(Math.Pow(e.X - Hero.Location.X, 2) + Math.Pow(e.Y - Hero.Location.Y, 2));
             var angle = Math.Acos((e.X - Hero.Location.X) / length);
             if (e.Y <= Hero.Location.Y) angle = -angle;
-            Hero.Direction = angle;
+            if (!double.IsNaN(angle)) Hero = new Hero(Hero.Location, Hero.Health, Hero.Experiens, angle);/*Hero.Direction = angle;*/
         }
+
         public void Reset()
         {
             Hero.Location = Levels.StartLoc;
             Enemy.Blood.Clear();
             Enemy.Enemies.Clear();
+            Bullet.Bullets.Clear();
+            //Thread.Sleep(1000);
+        }
+
+        public void Restart()
+        {
+            Hero = InitialHero;
+            Reset();
         }
     }
 }

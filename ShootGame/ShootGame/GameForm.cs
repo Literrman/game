@@ -15,21 +15,18 @@ namespace ShootGame
     {
         private Image hero;
         private Image aim;
-        private Image bulletIMG;
-
-        private Enemy enemy;
-        private Bullet bullet;
+        private Bitmap bulletIMG;
 
         private Weapon weapon;
-        //private static Image fonImage;
 
         private Level currentLvl;
+        private int lvlIndex;
+
         private Timer timer;
 
         private int animation;
         private int cooldown;
         private int timeCount;
-        private int lvlIndex;
 
         private readonly bool[] heroMove = new bool[4];
         private bool bulletMove;
@@ -37,7 +34,7 @@ namespace ShootGame
         private readonly Size mapSize = new Size(1023, 768);
         private Point MousePos = new Point(MousePosition.X, MousePosition.Y);
 
-        private static Random rnd = new Random();
+        //private static Random rnd = new Random();
 
         public void InitializeForm()
         {
@@ -57,27 +54,23 @@ namespace ShootGame
             KeyUp += (sender, e) => HandleKey(e.KeyCode, false);
             MouseDown += (sender, e) => HandleKey(e.Button, true);
             MouseUp += (sender, e) => HandleKey(e.Button, false);
-            MouseWheel += (sender, e) => weapon = (Weapon)(((int)weapon + e.Delta / 120 + 3) % 3);
+            MouseWheel += (sender, e) => weapon = (Weapon)(((int)weapon + Math.Sign(e.Delta) + 3) % 3);
             Paint += (sender, e) => DrawTo(e.Graphics);
         }       
 
-        public GameForm(IEnumerable<Level> levels)
+        public GameForm(IReadOnlyList<Level> levels)
         {
             weapon = default(Weapon);
             hero = GetImage(Heroes[MainHero.Halloween][weapon][0]);
             aim = GetImage("aim");
             bulletIMG = GetImage("bullRED");
+            bulletIMG.MakeTransparent(Color.Black);
             
-
             timer = new Timer { Interval = 10 };
             timer.Tick += TimerTick;
             timer.Start();            
 
-            foreach (var level in levels)
-            {
-                if (currentLvl == null) currentLvl = level;
-                //if (currentLvl.IsCompleted) ChangeLevel(level);
-            }
+            if (currentLvl == null) currentLvl = levels[lvlIndex];
         }
 
         private void ChangeLevel(Level newSpace)
@@ -103,13 +96,13 @@ namespace ShootGame
 
             timeCount += timer.Interval;////////не забыть
             
-            if (bulletMove && timeCount % 50 == 0)
-                bullet = new Bullet(weapon, currentLvl.Hero.Location, currentLvl.Hero.Direction);
+            if (bulletMove)
+                Bullet.Shoot(weapon, currentLvl.Hero.Location, currentLvl.Hero.Direction);
 
             foreach (var bull in Bullet.Bullets.ToList())
                 bull.Move();
 
-            if (timeCount % 300 == 0) enemy = new Enemy(RandomName(), RandomStartLocation());
+            if (timeCount % 300 == 0) new Enemy(mapSize);
 
             foreach (var enem in Enemy.Enemies.ToList())
             {
@@ -117,7 +110,7 @@ namespace ShootGame
                 if ((enem.Location - currentLvl.Hero.Location).Length < 30 && timeCount % 500 == 0)
                     currentLvl.Hero.Health -= enem.Damage;
             }
-            if (currentLvl.IsDead) timer.Stop();
+            if (currentLvl.IsDead) Menu("You Lose\n\rDo you want to continue?", 20);
             if (currentLvl.IsCompleted) ChangeLevel(Levels.MyLevels[++lvlIndex]);
             Invalidate();
             Update();
@@ -134,35 +127,74 @@ namespace ShootGame
             if (e == Keys.D2) weapon = Weapon.Shotgun;
             if (e == Keys.D3) weapon = Weapon.Plasmagun;
 
-            if (e == Keys.Escape) Close();
+            if (e == Keys.Escape) Menu("Menu", 30);
+        }
+
+        private void Menu(string labelText, int textSize)
+        {
+            var cont = new Button
+            {
+                Text = "Continue",
+                ForeColor = Color.Green,
+                Font = new Font("Helvetica", 20),
+                Size = new Size(300, 50),
+                Location = new Point(50, 120),
+            };
+            var exit = new Button
+            {
+                Text = "Exit",
+                ForeColor = Color.Green,
+                Font = new Font("Helvetica", 20),
+                Size = new Size(300, 50),
+                Location = new Point(50, cont.Bottom)
+            };
+            var label = new Label
+            {
+                Text = labelText,
+                TextAlign = ContentAlignment.MiddleCenter,
+                ForeColor = Color.DarkRed,
+                Font = new Font("Helvetica", textSize),
+                Size = new Size(400, 100),
+            };
+
+            var f2 = new Form
+            {
+                BackColor = Color.Black,
+                Size = new Size(400, 300),
+                FormBorderStyle = FormBorderStyle.None,
+                StartPosition = FormStartPosition.CenterScreen,
+                TopMost = true,
+                Controls = { cont, label, exit }
+            };
+            Stop(f2);
+
+            cont.MouseEnter += (sender, e) => cont.ForeColor = Color.DarkRed;
+            cont.MouseLeave += (sender, e) => cont.ForeColor = Color.Green;
+            exit.MouseEnter += (sender, e) => exit.ForeColor = Color.DarkRed;
+            exit.MouseLeave += (sender, e) => exit.ForeColor = Color.Green;
+
+            cont.Click += (sender, e) => Continue(f2);
+            exit.Click += (sender, e) => Close();
+        }
+
+        private void Continue(Form f)
+        {
+            if (currentLvl.IsDead) currentLvl.Restart();
+            Cursor.Hide();
+            f.Close();
+            timer.Start();
+        }
+
+        private void Stop(Form f)
+        {
+            Cursor.Show();
+            f.Show();
+            timer.Stop();
         }
 
         private void HandleKey(MouseButtons e, bool isAcive)
         {
             if (e == MouseButtons.Left) bulletMove = isAcive;
-        }
-
-        private Vector RandomStartLocation()
-        {
-            var a = mapSize.Width;
-            var b = mapSize.Height;
-            var perimetr = (a + b) * 2;
-            var n = rnd.Next(perimetr);
-
-            if (n < a) return new Vector(n, -20);
-            if (n - a < b) return new Vector(a + 20, n - a);
-            if (n - a - b < a) return new Vector(n - a - b, b + 20);
-            return new Vector(0, n - 2 * a - b);
-        }
-
-        private EName RandomName()
-        {
-            var n = rnd.Next(4);
-            if (n == 0) return EName.robot0;
-            if (n == 1) return EName.robot1;
-            if (n == 2) return EName.robot2;
-            if (n == 3) return EName.robot3;
-            return EName.monstr;
         }
 
         private void DrawTo(Graphics g)
@@ -187,7 +219,7 @@ namespace ShootGame
             g.DrawImage(aim, MousePos.X - aim.Width/2, MousePos.Y - aim.Height/2);
         }
 
-        private void DrawObj(Graphics g, Matrix matrix, Vector loc, double dir, Image img)
+        private static void DrawObj(Graphics g, Matrix matrix, Vector loc, double dir, Image img)
         {
             g.Transform = matrix;
             g.TranslateTransform((float)loc.X, (float)loc.Y);

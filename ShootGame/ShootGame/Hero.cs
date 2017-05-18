@@ -15,7 +15,7 @@ namespace ShootGame
         public readonly Image HeroImage;
         private const int StepLen = 3;
 
-        public Hero(Vector location, ushort health, int experiens, double direction)
+        public Hero(Vector location, int health, int experiens, double direction)
         {
             Location = location;
             Health = health;
