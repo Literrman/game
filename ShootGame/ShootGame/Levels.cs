@@ -25,9 +25,9 @@ namespace ShootGame
 
         public static List<Level> MyLevels = new List<Level>
         {
-            new Level("lvl1", Hero, 2),
-            new Level("lvl2", Hero, 2),
-            new Level("lvl3", Hero, 2),
+            new Level("lvl1", Hero, 50),
+            new Level("lvl2", Hero, 100),
+            new Level("lvl3", Hero, 1000),
             new Level("lvl4", Hero, 2),
             new Level("lvl5", Hero, 2)
         };

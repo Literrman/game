@@ -15,7 +15,6 @@ namespace ShootGame
     {
         private Image hero;
         private Image aim;
-        private Image bulletIMG;
 
         private Weapon weapon;
         private MainHero heroName;
@@ -61,7 +60,6 @@ namespace ShootGame
             heroName = name;
             hero = GetImage(Heroes[heroName][weapon][0]);
             aim = GetImage("aim");
-            bulletIMG = GetImage(Heroes[heroName][weapon][5]);
             
             timer = new Timer { Interval = 10 };
             timer.Tick += TimerTick;
@@ -81,23 +79,24 @@ namespace ShootGame
             }
             else hero = GetImage(Heroes[heroName][weapon][animation = 0]);
 
+            currentLvl.Hero.CheckEnemyBull();
             currentLvl.RotateHero(MousePos);
 
             timeCount += timer.Interval;////////не забыть
             
-            if (bulletMove)
-                Bullet.Shoot(weapon, currentLvl.Hero.Location, currentLvl.Hero.Direction);
+            if (bulletMove) Shoot(weapon, currentLvl.Hero.Location, currentLvl.Hero.Direction);
 
             foreach (var bull in Bullet.Bullets.ToList())
-                bull.Move();
+                bull.Move(currentLvl.Hero);
 
             if (timeCount % 300 == 0) new Enemy(mapSize);
 
             foreach (var enem in Enemy.Enemies.ToList())
             {
                 enem.Move(currentLvl.Hero, timeCount);
-                if ((enem.Location - currentLvl.Hero.Location).Length < 30 && timeCount % 500 == 0)
-                    currentLvl.Hero.Health -= enem.Damage;
+                enem.CheckIsDead(currentLvl.Hero);
+
+                if (enem.Name == EName.robot3) Enemy.Shoot(Weapon.Rocket, enem);
             }
 
             if (currentLvl.IsDead) Menu("You Lose\n\rDo you want to restart?", "Yes", "No", 20);
@@ -127,7 +126,7 @@ namespace ShootGame
       
         private void ChangeLevel(Level newSpace)
         {
-            if (currentLvl.IsWin) Menu("You Win!\n\rGo Main Menu?", "Yes", "Exit Game", 20);
+            if (currentLvl.IsWin) Menu("You Win!\n\rOpen Main Menu?", "Yes", "Exit Game", 20);
             else
             {
                 currentLvl = newSpace;
@@ -140,7 +139,6 @@ namespace ShootGame
         private void ChangeWeapon(int index)
         {
             weapon = (Weapon)(((int)weapon + index + 3) % 3);
-            bulletIMG = GetImage(Heroes[heroName][weapon][5]);
         }
 
         private void Menu(string labelText, string txt1, string txt2, int textSize)
@@ -204,7 +202,7 @@ namespace ShootGame
             f.Show();
             timer.Stop();
         }
-      
+
         private void DrawTo(Graphics g)
         {
             if (currentLvl == null) return;
@@ -221,7 +219,7 @@ namespace ShootGame
                 DrawObj(g, matrix, enem.Location, enem.Direction, enem.EnemyIMG);
 
             foreach (var bull in Bullet.Bullets)
-                DrawObj(g, matrix, bull.Location, bull.Direction, bulletIMG);
+                DrawObj(g, matrix, bull.Location, bull.Direction, bull.BullIMG);
             
             g.Transform = matrix;
             g.DrawImage(aim, MousePos.X - aim.Width/2, MousePos.Y - aim.Height/2);

@@ -73,6 +73,16 @@ namespace ShootGame.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bullBLUE {
+            get {
+                object obj = ResourceManager.GetObject("bullBLUE", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap bullGREEN {
             get {
                 object obj = ResourceManager.GetObject("bullGREEN", resourceCulture);
@@ -96,6 +106,16 @@ namespace ShootGame.Properties {
         internal static System.Drawing.Bitmap bullRED {
             get {
                 object obj = ResourceManager.GetObject("bullRED", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap bullRocket {
+            get {
+                object obj = ResourceManager.GetObject("bullRocket", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

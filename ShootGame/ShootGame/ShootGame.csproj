@@ -227,6 +227,7 @@
     <Content Include="Images\boss9\enemy_05.png" />
     <Content Include="Images\boss9\enemy_06.png" />
     <None Include="Images\bullets\bull14.png" />
+    <None Include="Images\bullets\bullBLUE.png" />
     <Content Include="Images\bullets\bullet_00.png" />
     <Content Include="Images\bullets\bullet_01.png" />
     <Content Include="Images\bullets\bullet_02.png" />
