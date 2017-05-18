@@ -9,8 +9,7 @@ namespace ShootGame
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var form = new GameForm(Levels.MyLevels);
-            form.InitializeForm();
+            var form = new MainMenu();
             Application.Run(form);
         }
     }

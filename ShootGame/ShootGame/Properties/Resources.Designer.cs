@@ -73,9 +73,9 @@ namespace ShootGame.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap bullet1 {
+        internal static System.Drawing.Bitmap bullGREEN {
             get {
-                object obj = ResourceManager.GetObject("bullet1", resourceCulture);
+                object obj = ResourceManager.GetObject("bullGREEN", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace ShootGame.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap bullet2 {
+        internal static System.Drawing.Bitmap bullMETAL {
             get {
-                object obj = ResourceManager.GetObject("bullet2", resourceCulture);
+                object obj = ResourceManager.GetObject("bullMETAL", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -126,6 +126,26 @@ namespace ShootGame.Properties {
         internal static System.Drawing.Bitmap dead_02 {
             get {
                 object obj = ResourceManager.GetObject("dead_02", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap death {
+            get {
+                object obj = ResourceManager.GetObject("death", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap halloween {
+            get {
+                object obj = ResourceManager.GetObject("halloween", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

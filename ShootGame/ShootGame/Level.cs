@@ -26,6 +26,7 @@ namespace ShootGame
 
         public bool IsCompleted => Enemy.Count == EnemyLim;
         public bool IsDead => Hero.Health <= 0;
+        public bool IsWin => Name == "lvl5" && IsCompleted;
 
         public Image GetImage(string e) => (Image)ResourceManager.GetObject(e);
 
@@ -55,14 +56,13 @@ namespace ShootGame
             var length = Math.Sqrt(Math.Pow(e.X - Hero.Location.X, 2) + Math.Pow(e.Y - Hero.Location.Y, 2));
             var angle = Math.Acos((e.X - Hero.Location.X) / length);
             if (e.Y <= Hero.Location.Y) angle = -angle;
-            if (!double.IsNaN(angle)) Hero = new Hero(Hero.Location, Hero.Health, Hero.Experiens, angle);/*Hero.Direction = angle;*/
+            if (!double.IsNaN(angle)) Hero = new Hero(Hero.Location, Hero.Health, Hero.Experiens, angle);
         }
 
         public void Reset()
         {
             Hero.Location = Levels.StartLoc;
-            Enemy.Blood.Clear();
-            Enemy.Enemies.Clear();
+            Enemy.KillMobs();
             Bullet.Bullets.Clear();
             //Thread.Sleep(1000);
         }

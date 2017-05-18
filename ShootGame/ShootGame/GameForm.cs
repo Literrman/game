@@ -15,17 +15,15 @@ namespace ShootGame
     {
         private Image hero;
         private Image aim;
-        private Bitmap bulletIMG;
+        private Image bulletIMG;
 
         private Weapon weapon;
+        private MainHero heroName;
 
         private Level currentLvl;
-        private int lvlIndex;
-
         private Timer timer;
 
         private int animation;
-        private int cooldown;
         private int timeCount;
 
         private readonly bool[] heroMove = new bool[4];
@@ -43,7 +41,6 @@ namespace ShootGame
             FormBorderStyle = FormBorderStyle.None;
             StartPosition = FormStartPosition.CenterScreen;
 
-            //fonImage = Image.FromFile("Images/background0.jpg");
             BackgroundImage = GetImage(currentLvl.Name);
             BackgroundImageLayout = ImageLayout.None;
             DoubleBuffered = true;
@@ -54,31 +51,23 @@ namespace ShootGame
             KeyUp += (sender, e) => HandleKey(e.KeyCode, false);
             MouseDown += (sender, e) => HandleKey(e.Button, true);
             MouseUp += (sender, e) => HandleKey(e.Button, false);
-            MouseWheel += (sender, e) => weapon = (Weapon)(((int)weapon + Math.Sign(e.Delta) + 3) % 3);
+            MouseWheel += (sender, e) => ChangeWeapon(Math.Sign(e.Delta));
             Paint += (sender, e) => DrawTo(e.Graphics);
-        }       
+        }
 
-        public GameForm(IReadOnlyList<Level> levels)
+        public GameForm(MainHero name)
         {
             weapon = default(Weapon);
-            hero = GetImage(Heroes[MainHero.Halloween][weapon][0]);
+            heroName = name;
+            hero = GetImage(Heroes[heroName][weapon][0]);
             aim = GetImage("aim");
-            bulletIMG = GetImage("bullRED");
-            bulletIMG.MakeTransparent(Color.Black);
+            bulletIMG = GetImage(Heroes[heroName][weapon][5]);
             
             timer = new Timer { Interval = 10 };
             timer.Tick += TimerTick;
             timer.Start();            
 
-            if (currentLvl == null) currentLvl = levels[lvlIndex];
-        }
-
-        private void ChangeLevel(Level newSpace)
-        {
-            currentLvl = newSpace;
-            currentLvl.Reset();
-            BackgroundImage = GetImage(newSpace.Name);
-            timer.Start();
+            if (currentLvl == null) currentLvl = Levels.MyLevels[0];
         }
 
         private void TimerTick(object sender, EventArgs e)
@@ -88,9 +77,9 @@ namespace ShootGame
             if (!heroMove.All(x => !x))
             {
                 currentLvl.MoveHero(mapSize, heroMove);
-                hero = GetImage(Heroes[MainHero.Halloween][weapon][++animation / 5 % 5]);
+                hero = GetImage(Heroes[heroName][weapon][++animation / 5 % 5]);
             }
-            else hero = GetImage(Heroes[MainHero.Halloween][weapon][animation = 0]);
+            else hero = GetImage(Heroes[heroName][weapon][animation = 0]);
 
             currentLvl.RotateHero(MousePos);
 
@@ -110,8 +99,10 @@ namespace ShootGame
                 if ((enem.Location - currentLvl.Hero.Location).Length < 30 && timeCount % 500 == 0)
                     currentLvl.Hero.Health -= enem.Damage;
             }
-            if (currentLvl.IsDead) Menu("You Lose\n\rDo you want to continue?", 20);
-            if (currentLvl.IsCompleted) ChangeLevel(Levels.MyLevels[++lvlIndex]);
+
+            if (currentLvl.IsDead) Menu("You Lose\n\rDo you want to restart?", "Yes", "No", 20);
+            if (currentLvl.IsCompleted) ChangeLevel(Levels.NextLvl());
+
             Invalidate();
             Update();
         }
@@ -127,26 +118,48 @@ namespace ShootGame
             if (e == Keys.D2) weapon = Weapon.Shotgun;
             if (e == Keys.D3) weapon = Weapon.Plasmagun;
 
-            if (e == Keys.Escape) Menu("Menu", 30);
+            if (e == Keys.Escape) Menu("Menu","Continue", "Exit Game", 30);
+        }
+        private void HandleKey(MouseButtons e, bool isAcive)
+        {
+            if (e == MouseButtons.Left) bulletMove = isAcive;
+        }
+      
+        private void ChangeLevel(Level newSpace)
+        {
+            if (currentLvl.IsWin) Menu("You Win!\n\rGo Main Menu?", "Yes", "Exit Game", 20);
+            else
+            {
+                currentLvl = newSpace;
+                currentLvl.Reset();
+                BackgroundImage = GetImage(newSpace.Name);
+                timer.Start();
+            }
         }
 
-        private void Menu(string labelText, int textSize)
+        private void ChangeWeapon(int index)
+        {
+            weapon = (Weapon)(((int)weapon + index + 3) % 3);
+            bulletIMG = GetImage(Heroes[heroName][weapon][5]);
+        }
+
+        private void Menu(string labelText, string txt1, string txt2, int textSize)
         {
             var cont = new Button
             {
-                Text = "Continue",
+                Text = txt1,
                 ForeColor = Color.Green,
                 Font = new Font("Helvetica", 20),
-                Size = new Size(300, 50),
-                Location = new Point(50, 120),
+                Size = currentLvl.IsDead ? new Size(150, 50) : new Size(300, 50),
+                Location = currentLvl.IsDead ? new Point(50, 200) : new Point(50, 120),
             };
             var exit = new Button
             {
-                Text = "Exit",
-                ForeColor = Color.Green,
-                Font = new Font("Helvetica", 20),
-                Size = new Size(300, 50),
-                Location = new Point(50, cont.Bottom)
+                Text = txt2,
+                ForeColor = cont.ForeColor,
+                Font = cont.Font,
+                Size = cont.Size,
+                Location = currentLvl.IsDead ? new Point(cont.Right, cont.Top) : new Point(50, cont.Bottom)
             };
             var label = new Label
             {
@@ -156,7 +169,6 @@ namespace ShootGame
                 Font = new Font("Helvetica", textSize),
                 Size = new Size(400, 100),
             };
-
             var f2 = new Form
             {
                 BackColor = Color.Black,
@@ -174,12 +186,13 @@ namespace ShootGame
             exit.MouseLeave += (sender, e) => exit.ForeColor = Color.Green;
 
             cont.Click += (sender, e) => Continue(f2);
-            exit.Click += (sender, e) => Close();
+            exit.Click += (sender, e) => Application.Exit();
         }
 
         private void Continue(Form f)
         {
             if (currentLvl.IsDead) currentLvl.Restart();
+            if (currentLvl.IsWin) Application.Restart();
             Cursor.Hide();
             f.Close();
             timer.Start();
@@ -191,12 +204,7 @@ namespace ShootGame
             f.Show();
             timer.Stop();
         }
-
-        private void HandleKey(MouseButtons e, bool isAcive)
-        {
-            if (e == MouseButtons.Left) bulletMove = isAcive;
-        }
-
+      
         private void DrawTo(Graphics g)
         {
             if (currentLvl == null) return;

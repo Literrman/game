@@ -56,6 +56,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Levels.cs" />
+    <Compile Include="MainMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Object.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -223,6 +226,7 @@
     <Content Include="Images\boss9\enemy_04.png" />
     <Content Include="Images\boss9\enemy_05.png" />
     <Content Include="Images\boss9\enemy_06.png" />
+    <None Include="Images\bullets\bull14.png" />
     <Content Include="Images\bullets\bullet_00.png" />
     <Content Include="Images\bullets\bullet_01.png" />
     <Content Include="Images\bullets\bullet_02.png" />

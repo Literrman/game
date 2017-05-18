@@ -79,6 +79,13 @@ namespace ShootGame
             }
         }
 
+        public static void KillMobs()
+        {
+            Enemies.Clear();
+            Blood.Clear();
+            Count = 0;
+        }
+
         private static Vector RndStartLoc(Size mapSize)
         {
             var a = mapSize.Width;

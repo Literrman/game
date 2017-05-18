@@ -121,9 +121,6 @@
   <data name="aim" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Interface\cursor_07.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="bullet1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\bullets\bullet_08.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="bullRED" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\bullets\bullet_14.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -262,9 +259,6 @@
   <data name="r2_08" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\enemy2\enemy0_08.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="bullet2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\bullets\bullet_19.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="hero0_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\hero\weapon3\hero_05.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -351,5 +345,17 @@
   </data>
   <data name="lvl5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\background8.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bullGREEN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\bullets\bull14.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bullMETAL" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\bullets\bullet_10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="death" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Interface\hero_06.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="halloween" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Interface\hero_07.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
