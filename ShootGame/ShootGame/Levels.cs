@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using static System.Windows.Forms.Form;
+using static ShootGame.Hero;
 
 namespace ShootGame
 {
@@ -9,19 +10,6 @@ namespace ShootGame
         public static readonly Vector StartLoc = new Vector(512, 374);
         private static readonly Hero Hero = new Hero(location: StartLoc, health: 100, experiens: 0, direction: 0);
         private static int lvl;
-
-        //public static IEnumerable<Level> CreateLevels()
-        //{
-        //    yield return new Level("lvl1", Hero, 10);
-
-        //    yield return new Level("lvl2", Hero, 20);
-
-        //    yield return new Level("lvl3", Hero, 100);
-
-        //    yield return new Level("lvl4", Hero, 100);
-
-        //    yield return new Level("lvl5", Hero, 100);
-        //}
 
         public static List<Level> MyLevels = new List<Level>
         {
@@ -33,6 +21,15 @@ namespace ShootGame
         };
 
         public static Level NextLvl() => lvl + 1 == MyLevels.Count ? MyLevels[lvl] : MyLevels[++lvl];
-        public static void Restart() => lvl = 0;
+
+        private static List<Object> list1 = new List<Object>
+        {
+            new Object(new Vector(50, ),0, GetImage("")),
+            new Object(new Vector(),0,  GetImage("")),
+            new Object(new Vector(),0,  GetImage("")),
+            new Object(new Vector(),0,  GetImage("")),
+            new Object(new Vector(),0,  GetImage("")),
+
+        };
     }
 }

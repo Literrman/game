@@ -100,7 +100,7 @@ namespace ShootGame
             }
 
             if (currentLvl.IsDead) Menu("You Lose\n\rDo you want to restart?", "Yes", "No", 20);
-            if (currentLvl.IsCompleted) ChangeLevel(Levels.NextLvl());
+            else if (currentLvl.IsCompleted) ChangeLevel(Levels.NextLvl());
 
             Invalidate();
             Update();

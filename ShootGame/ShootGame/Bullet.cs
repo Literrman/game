@@ -14,7 +14,7 @@ namespace ShootGame
 
         public readonly Vector Location;
         public double Direction;
-        private static double MaxDistance = 2000;
+        private static double MaxDistance = 1300;
 
         public readonly int MaxAmmo;
         private readonly int Speed;

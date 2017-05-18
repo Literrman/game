@@ -76,6 +76,7 @@ namespace ShootGame
                     if (bullet.IsMy == bull.IsMy || (bull.Location - bullet.Location).Length >= 7) continue;
                     Bullets.Remove(bull);
                     Bullets.Remove(bullet);
+                    break;
                 }
 
                 if (!bull.IsMy || (Location - bull.Location).Length >= HitBox) continue;
@@ -97,10 +98,7 @@ namespace ShootGame
         public static void Shoot(Weapon name, Enemy enemy)
         {
             if (timer.ElapsedMilliseconds - tmptime < WeaponInfo[name].Item3) return;
-
-            if (name == Weapon.Rocket) new Bullet(name, enemy.Location, enemy.Direction, false);
-            if (name == Weapon.Laser) new Bullet(name, enemy.Location, enemy.Direction, false);
-
+            if (name == Weapon.Rocket || name == Weapon.Laser) new Bullet(name, enemy.Location, enemy.Direction, false);
             tmptime = timer.ElapsedMilliseconds;
         }
 

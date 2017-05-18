@@ -352,6 +352,30 @@
   <data name="bullMETAL" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\bullets\bullet_10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="boss0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\boss6\enemy_00.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="boss1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\boss6\enemy_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="boss2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\boss6\enemy_02.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="boss3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\boss6\enemy_03.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="boss4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\boss6\enemy_04.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="boss5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\boss6\enemy_05.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="boss6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\boss6\enemy_06.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="boss7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\boss6\enemy_07.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="bullBLUE" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\bullets\bullBLUE.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

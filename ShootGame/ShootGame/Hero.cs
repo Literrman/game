@@ -43,11 +43,19 @@ namespace ShootGame
             }
             if (timer.ElapsedMilliseconds - tmptime < WeaponInfo[name].Item3 || isRewrite[(int)name]) return;
 
-            if (name == Weapon.Shotgun)
-                for (var i = -2; i <= 2; i++)
-                    new Bullet(name, location, direction + i / Math.PI / 4, true);
-            if (name == Weapon.UZI) new Bullet(name, location, direction, true);
-            if (name == Weapon.Plasmagun) new Bullet(name, location, direction, true);
+            switch (name)
+            {
+                case Weapon.Shotgun:
+                    for (var i = -2; i <= 2; i++)
+                        new Bullet(name, location, direction + i / Math.PI / 4, true);
+                    break;
+                case Weapon.UZI:
+                    new Bullet(name, location, direction, true);
+                    break;
+                case Weapon.Plasmagun:
+                    new Bullet(name, location, direction, true);
+                    break;
+            }
 
             tmptime = timer.ElapsedMilliseconds;
             t[(int)name]++;
