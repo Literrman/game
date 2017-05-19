@@ -16,7 +16,8 @@ namespace ShootGame
         private Image hero;
         private Image aim;
         private Image bulletIMG;
-
+        private Boss boss;
+  
         private Weapon weapon;
         private MainHero heroName;
 
@@ -31,6 +32,7 @@ namespace ShootGame
 
         private readonly Size mapSize = new Size(1023, 768);
         private Point MousePos = new Point(MousePosition.X, MousePosition.Y);
+        private Bitmap boss_im;
 
         //private static Random rnd = new Random();
 
@@ -60,6 +62,7 @@ namespace ShootGame
             weapon = default(Weapon);
             heroName = name;
             hero = GetImage(Heroes[heroName][weapon][0]);
+            boss = new Boss(new Vector(5, 5), 1000, 2, 10, 10);
             aim = GetImage("aim");
             bulletIMG = GetImage(Heroes[heroName][weapon][5]);
             
@@ -99,6 +102,9 @@ namespace ShootGame
                 if ((enem.Location - currentLvl.Hero.Location).Length < 30 && timeCount % 500 == 0)
                     currentLvl.Hero.Health -= enem.Damage;
             }
+            boss.Move(currentLvl.Hero, 30);
+            if ((boss.Location - currentLvl.Hero.Location).Length < 30 && timeCount % 500 == 0)
+                currentLvl.Hero.Health -= boss.Damage;
 
             if (currentLvl.IsDead) Menu("You Lose\n\rDo you want to restart?", "Yes", "No", 20);
             if (currentLvl.IsCompleted) ChangeLevel(Levels.NextLvl());
@@ -219,6 +225,8 @@ namespace ShootGame
 
             foreach (var enem in Enemy.Enemies)
                 DrawObj(g, matrix, enem.Location, enem.Direction, enem.EnemyIMG);
+
+            DrawObj(g, matrix, boss.Location, boss.Direction, boss.BossImage);
 
             foreach (var bull in Bullet.Bullets)
                 DrawObj(g, matrix, bull.Location, bull.Direction, bulletIMG);
