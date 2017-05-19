@@ -15,8 +15,13 @@ namespace ShootGame
     {
         private Image hero;
         private Image aim;
+<<<<<<< HEAD
+        private Image bulletIMG;
         private Boss boss;
   
+=======
+
+>>>>>>> 45aa24a864944f52f8e95c571fc73a8fe0277446
         private Weapon weapon;
         private MainHero heroName;
 

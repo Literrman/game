@@ -28,8 +28,6 @@ namespace ShootGame
         public bool IsDead => Hero.Health <= 0;
         public bool IsWin => Name == "lvl5" && IsCompleted;
 
-        public Image GetImage(string e) => (Image)ResourceManager.GetObject(e);
-
         public void MoveHero(Size space, bool[] movement)
         {
             var x = 0;
@@ -64,7 +62,7 @@ namespace ShootGame
             Hero.Location = Levels.StartLoc;
             Enemy.KillMobs();
             Bullet.Bullets.Clear();
-            //Thread.Sleep(1000);
+            Thread.Sleep(5000);
         }
 
         public void Restart()

@@ -73,6 +73,96 @@ namespace ShootGame.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap boss0 {
+            get {
+                object obj = ResourceManager.GetObject("boss0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap boss1 {
+            get {
+                object obj = ResourceManager.GetObject("boss1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap boss2 {
+            get {
+                object obj = ResourceManager.GetObject("boss2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap boss3 {
+            get {
+                object obj = ResourceManager.GetObject("boss3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap boss4 {
+            get {
+                object obj = ResourceManager.GetObject("boss4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap boss5 {
+            get {
+                object obj = ResourceManager.GetObject("boss5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap boss6 {
+            get {
+                object obj = ResourceManager.GetObject("boss6", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap boss7 {
+            get {
+                object obj = ResourceManager.GetObject("boss7", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap bullBLUE {
+            get {
+                object obj = ResourceManager.GetObject("bullBLUE", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap bullGREEN {
             get {
                 object obj = ResourceManager.GetObject("bullGREEN", resourceCulture);
@@ -96,6 +186,16 @@ namespace ShootGame.Properties {
         internal static System.Drawing.Bitmap bullRED {
             get {
                 object obj = ResourceManager.GetObject("bullRED", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap bullRocket {
+            get {
+                object obj = ResourceManager.GetObject("bullRocket", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -496,6 +596,26 @@ namespace ShootGame.Properties {
         internal static System.Drawing.Bitmap lvl5 {
             get {
                 object obj = ResourceManager.GetObject("lvl5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap obj_1 {
+            get {
+                object obj = ResourceManager.GetObject("obj_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap obj_2 {
+            get {
+                object obj = ResourceManager.GetObject("obj_2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

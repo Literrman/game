@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -7,12 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using static ShootGame.Hero;
+using static ShootGame.Bullet;
 
 namespace ShootGame
 {
     class Enemy
     {
-        private EName Name;
+        public EName Name;
         public Vector Location;
         public double Direction;
 
@@ -30,6 +32,9 @@ namespace ShootGame
 
         private static Random rnd = new Random();
         public static int Count { get; private set; }
+
+        private static Stopwatch timer = Stopwatch.StartNew();
+        private static long tmptime;
 
         private Enemy(EName name, Vector location, double direction = 0)
         {
@@ -59,12 +64,23 @@ namespace ShootGame
                 animation2 %= 40;
                 hero.Health -= timeCount % 500 == 0 ? Damage : 0;
             }
-            else Location += 0.5 * new Vector(Math.Cos(Direction), Math.Sin(Direction));
+            else Location += 0.5 * new Vector(Math.Cos(Direction), Math.Sin(Direction));        
+        }
 
-            foreach (var bull in Bullet.Bullets.ToList())
+        public void CheckIsDead(Hero hero)
+        {
+            foreach (var bull in Bullets.ToList())
             {
-                if ((Location - bull.Location).Length >= HitBox) continue;
-                Bullet.Bullets.Remove(bull);
+                foreach (var bullet in Bullets.ToList())
+                {
+                    if (bullet.IsMy == bull.IsMy || (bull.Location - bullet.Location).Length >= 7) continue;
+                    Bullets.Remove(bull);
+                    Bullets.Remove(bullet);
+                    break;
+                }
+
+                if (!bull.IsMy || (Location - bull.Location).Length >= HitBox) continue;
+                Bullets.Remove(bull);
                 Health -= bull.Damage;
                 if (Health <= 0)
                 {
@@ -77,6 +93,13 @@ namespace ShootGame
                 }
                 break;
             }
+        }
+
+        public static void Shoot(Weapon name, Enemy enemy)
+        {
+            if (timer.ElapsedMilliseconds - tmptime < WeaponInfo[name].Item3) return;
+            if (name == Weapon.Rocket || name == Weapon.Laser) new Bullet(name, enemy.Location, enemy.Direction, false);
+            tmptime = timer.ElapsedMilliseconds;
         }
 
         public static void KillMobs()
@@ -124,7 +147,6 @@ namespace ShootGame
             [EName.robot1] = Tuple.Create(20, 10, 5, 18),
             [EName.robot2] = Tuple.Create(20, 10, 5, 18),
             [EName.robot3] = Tuple.Create(120, 15, 5, 25),
-
         };
     }
 }

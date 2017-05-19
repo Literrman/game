@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
 
@@ -9,9 +10,11 @@ namespace ShootGame
     public class Bullet
     {
         public Weapon Name;
+        public readonly Bitmap BullIMG;
+
         public readonly Vector Location;
-        public readonly double Direction;
-        private static double MaxDistance = 2000;
+        public double Direction;
+        private static double MaxDistance = 1300;
 
         public readonly int MaxAmmo;
         private readonly int Speed;
@@ -19,19 +22,15 @@ namespace ShootGame
         public readonly int Reload;
         public readonly int Damage;
         public readonly int Scatter;
-
-        private static Stopwatch timer = Stopwatch.StartNew();
-        private static long tmptime;
+        public readonly bool IsMy;
         
         public static readonly HashSet<Bullet> Bullets = new HashSet<Bullet>();
 
-        private static readonly int[] t = new int[3];
-        private static readonly long[] reloadTime = new long[3]; 
-        private static readonly bool[] isRewrite = new bool[3];
-
-        public Bullet(Weapon name, Vector location, double direction)
+        public Bullet(Weapon name, Vector location, double direction, bool isMy)
         {
             Name = name;
+            BullIMG = Hero.GetImage(WeaponInfo[Name].Item7);
+            IsMy = isMy;
             Location = new Vector(location);
             Direction = direction;
 
@@ -45,44 +44,22 @@ namespace ShootGame
             Bullets.Add(this);
         }
 
-        public void Move()
-        {          
+        public void Move(Hero hero)
+        {
+            if (Name == Weapon.Rocket) Direction = (hero.Location - Location).Angle;
             Location.X += Speed*Math.Cos(Direction);
             Location.Y += Speed*Math.Sin(Direction);
             if (Location.Length > MaxDistance) Bullets.Remove(this);
         }
 
-        public static void Shoot(Weapon name, Vector location, double direction)
+        public static readonly Dictionary<Weapon, Tuple<int, int, int, int, int, int, string>> WeaponInfo = new Dictionary<Weapon, Tuple<int, int, int, int, int, int, string>>
         {
-            if (timer.ElapsedMilliseconds - reloadTime[(int) name] >= WeaponInfo[name].Item4 && isRewrite[(int) name])
-            {
-                isRewrite[(int) name] = false;
-                t[(int) name] = 0;
-            }
-            if (timer.ElapsedMilliseconds - tmptime < WeaponInfo[name].Item3 || isRewrite[(int) name]) return;
-
-            if (name == Weapon.Shotgun)
-                for (var i = -2; i <= 2; i++)
-                    new Bullet(name, location, direction + i / Math.PI / 4);
-            if (name == Weapon.UZI) new Bullet(name, location, direction);
-            if (name == Weapon.Plasmagun) new Bullet(name, location, direction);
-
-            tmptime = timer.ElapsedMilliseconds;
-            t[(int) name]++;
-
-            if (t[(int) name] < WeaponInfo[name].Item1) return;
-
-            reloadTime[(int) name] = timer.ElapsedMilliseconds;
-            isRewrite[(int) name] = true;
-        }
-
-        private static readonly Dictionary<Weapon, Tuple<int, int, int, int, int, int>> WeaponInfo = new Dictionary<Weapon, Tuple<int, int, int, int, int, int>>
-        {
-            [Weapon.UZI] = Tuple.Create(20, 10, 270, 1000, 8, 20),
-            [Weapon.Shotgun] = Tuple.Create(5, 10, 700, 2000, 15, 40),
-            [Weapon.Plasmagun] = Tuple.Create(40, 10, 100, 1200, 12, 20),
+            [Weapon.UZI] = Tuple.Create(20, 10, 270, 1000, 8, 20, "bullRED"),
+            [Weapon.Shotgun] = Tuple.Create(5, 10, 700, 2000, 15, 40, "bullMETAL"),
+            [Weapon.Plasmagun] = Tuple.Create(40, 10, 100, 1200, 12, 20, "bullGREEN"),
+            [Weapon.Rocket] = Tuple.Create(0, 2, 5000, 0, 5, 20, "bullRocket"),
+            [Weapon.Laser] = Tuple.Create(0, 10, 300, 0, 2, 20, "bullBLUE"),
         };
-
-
     }//  item1 - maxAmmo, item2 - speed, item3 - cooldown, item4 - reload, item5 - damage, item6 - scatter
+    //item1 - speed, item2 - cooldown, item3-damage, item4 - scatter
 }
