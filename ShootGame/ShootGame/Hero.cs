@@ -92,6 +92,7 @@ namespace ShootGame
                 [Weapon.Plasmagun] = new[] { "hero1_27", "hero1_28", "hero1_29", "hero1_26", "hero1_25" }
             }
         };
+
         public static Bitmap GetImage(string e) => (Bitmap)ResourceManager.GetObject(e);
     }
 }

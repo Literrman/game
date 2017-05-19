@@ -603,6 +603,26 @@ namespace ShootGame.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap obj_1 {
+            get {
+                object obj = ResourceManager.GetObject("obj_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap obj_2 {
+            get {
+                object obj = ResourceManager.GetObject("obj_2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap r0_00 {
             get {
                 object obj = ResourceManager.GetObject("r0_00", resourceCulture);

@@ -220,6 +220,11 @@ namespace ShootGame
 
             foreach (var bull in Bullet.Bullets)
                 DrawObj(g, matrix, bull.Location, bull.Direction, bull.BullIMG);
+
+            //foreach (var obj in Object.Objects[currentLvl.Name])
+            //{
+            //    DrawObj(g, matrix, obj.Location, obj.Direction, obj.ObjectIMG);
+            //}
             
             g.Transform = matrix;
             g.DrawImage(aim, MousePos.X - aim.Width/2, MousePos.Y - aim.Height/2);

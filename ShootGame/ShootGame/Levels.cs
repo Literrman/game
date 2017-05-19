@@ -11,7 +11,7 @@ namespace ShootGame
         private static readonly Hero Hero = new Hero(location: StartLoc, health: 100, experiens: 0, direction: 0);
         private static int lvl;
 
-        public static List<Level> MyLevels = new List<Level>
+        public static readonly List<Level> MyLevels = new List<Level>
         {
             new Level("lvl1", Hero, 50),
             new Level("lvl2", Hero, 100),
@@ -20,16 +20,8 @@ namespace ShootGame
             new Level("lvl5", Hero, 2)
         };
 
-        public static Level NextLvl() => lvl + 1 == MyLevels.Count ? MyLevels[lvl] : MyLevels[++lvl];
+        public static Level NextLvl() => lvl + 1 == MyLevels.Count ? MyLevels[lvl] : MyLevels[lvl++];
 
-        private static List<Object> list1 = new List<Object>
-        {
-            new Object(new Vector(50, ),0, GetImage("")),
-            new Object(new Vector(),0,  GetImage("")),
-            new Object(new Vector(),0,  GetImage("")),
-            new Object(new Vector(),0,  GetImage("")),
-            new Object(new Vector(),0,  GetImage("")),
-
-        };
+        
     }
 }
